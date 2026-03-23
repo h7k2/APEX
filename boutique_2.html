@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX — Sport & Tech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0a0a0a;--surface:#111;--border:#1e1e1e;--accent:#c8f135;--accent2:#3bffd8;--text:#f0f0f0;--muted:#666;--card:#141414; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:.4}
+
+  header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 4rem;height:72px;background:rgba(10,10,10,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+  .logo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.1em}
+  .logo span{color:var(--accent)}
+  nav{display:flex;gap:2.5rem}
+  nav a{text-decoration:none;color:var(--muted);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+  nav a:hover,nav a.active{color:var(--text)}
+  .header-right{display:flex;align-items:center;gap:1rem}
+  .user-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.45rem 1rem;font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.4rem}
+  .user-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .user-btn.logged{border-color:var(--accent);color:var(--accent)}
+  .cart-btn{display:flex;align-items:center;gap:.5rem;background:var(--accent);color:#000;border:none;padding:.5rem 1.2rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.85rem;cursor:pointer;transition:background .2s,transform .15s}
+  .cart-btn:hover{background:#d4ff40;transform:translateY(-1px)}
+  .cart-count{background:#000;color:var(--accent);border-radius:50%;width:18px;height:18px;font-size:.7rem;display:flex;align-items:center;justify-content:center;font-weight:500}
+
+  .hero{padding:6rem 4rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+  .hero::after{content:'APEX';position:absolute;right:-2rem;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:22rem;color:rgba(255,255,255,.015);pointer-events:none}
+  .hero-label{font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem}
+  .hero-label::before{content:'';width:2rem;height:1px;background:var(--accent)}
+  .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,6vw,6rem);line-height:.95;margin-bottom:1.5rem}
+  .hero h1 em{font-style:normal;color:var(--accent);display:block}
+  .hero p{color:var(--muted);font-size:1rem;line-height:1.7;max-width:420px;margin-bottom:2.5rem}
+  .hero-stats{display:flex;gap:3rem}
+  .stat-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--accent);line-height:1}
+  .stat-label{font-size:.75rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.25rem}
+  .hero-visual{display:flex;align-items:center;justify-content:center;height:380px;position:relative}
+  .hero-circle{width:320px;height:320px;border-radius:50%;border:1px solid var(--border);position:absolute;animation:spin 20s linear infinite}
+  .hero-circle::before{content:'';position:absolute;top:-3px;left:50%;width:6px;height:6px;background:var(--accent);border-radius:50%;transform:translateX(-50%)}
+  .hero-circle-2{width:220px;height:220px;animation-duration:15s;animation-direction:reverse}
+  .hero-icon{font-size:5rem;z-index:1;filter:drop-shadow(0 0 40px rgba(200,241,53,.3));animation:float 4s ease-in-out infinite}
+
+  .filters-bar{padding:2rem 4rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+  .filters{display:flex;gap:.5rem}
+  .filter-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.4rem 1rem;font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;transition:all .2s}
+  .filter-btn:hover,.filter-btn.active{border-color:var(--accent);color:var(--accent)}
+  .sort-select{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.4rem 1rem;font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;outline:none}
+  .sort-select option{background:var(--surface)}
+
+  .catalog{padding:3rem 4rem}
+  .catalog-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem}
+  .catalog-title{font-family:'Bebas Neue',sans-serif;font-size:2rem}
+  .catalog-count{color:var(--muted);font-size:.85rem}
+
+  .api-banner{margin-bottom:1.5rem;padding:.65rem 1rem;font-size:.78rem;display:none;align-items:center;gap:.6rem;border:1px solid}
+  .api-banner.offline{border-color:#ff3b3b33;background:#ff3b3b11;color:#ff8080}
+  .api-banner.online{border-color:#c8f13533;background:#c8f13511;color:var(--accent)}
+  .api-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+  .api-banner.offline .api-dot{background:#ff3b3b}
+  .api-banner.online .api-dot{background:var(--accent);animation:blink 2s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5px;background:var(--border)}
+  .product-card{background:var(--card);position:relative;overflow:hidden;cursor:pointer;transition:background .3s;opacity:0;animation:fadeUp .5s ease forwards}
+  .product-card:hover{background:#181818}
+  .product-card:hover .card-actions{opacity:1;transform:translateY(0)}
+  .product-card:hover .product-emoji{transform:scale(1.08) translateY(-6px)}
+  .badge{position:absolute;top:1rem;left:1rem;z-index:2;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;padding:.25rem .6rem;font-weight:500}
+  .badge-new{background:var(--accent);color:#000}
+  .badge-sale{background:#ff3b3b;color:#fff}
+  .badge-hot{background:var(--accent2);color:#000}
+  .product-img-wrap{height:240px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f0f0f,#1a1a1a);position:relative}
+  .product-emoji{font-size:4.5rem;transition:transform .5s ease;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5))}
+  .card-actions{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.8));padding:1rem;opacity:0;transform:translateY(8px);transition:all .25s ease;display:flex;gap:.5rem}
+  .btn-add{flex:1;background:var(--accent);border:none;color:#000;padding:.6rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.8rem;cursor:pointer;transition:background .2s;text-transform:uppercase}
+  .btn-add:hover{background:#d4ff40}
+  .btn-wish{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:var(--text);width:36px;cursor:pointer;font-size:1rem;transition:background .2s}
+  .card-body{padding:1.25rem}
+  .product-category{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+  .product-name{font-size:.95rem;font-weight:500;margin-bottom:.75rem;line-height:1.3}
+  .product-price{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--accent)}
+  .product-price .original{font-size:.9rem;color:var(--muted);text-decoration:line-through;margin-left:.4rem}
+  .product-stock{font-size:.72rem;color:var(--muted);margin-top:.3rem}
+  .product-stock.low{color:#ff8c42}
+
+  .grid-loader{grid-column:1/-1;display:flex;align-items:center;justify-content:center;padding:5rem;color:var(--muted);gap:.75rem;background:var(--card)}
+  .spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+
+  .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(4px)}
+  .cart-overlay.open{opacity:1;pointer-events:all}
+  .cart-sidebar{position:fixed;top:0;right:0;width:420px;height:100vh;background:var(--surface);border-left:1px solid var(--border);z-index:201;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+  .cart-sidebar.open{transform:translateX(0)}
+  .cart-header{padding:2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+  .cart-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.1em}
+  .close-btn{background:transparent;border:1px solid var(--border);color:var(--muted);width:36px;height:36px;cursor:pointer;font-size:1.2rem;transition:all .2s;display:flex;align-items:center;justify-content:center}
+  .close-btn:hover{border-color:var(--text);color:var(--text)}
+  .cart-items{flex:1;overflow-y:auto;padding:1.5rem 2rem}
+  .cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border);animation:slideIn .3s ease}
+  .cart-item-emoji{font-size:2.5rem;background:var(--card);width:60px;height:60px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .cart-item-info{flex:1}
+  .cart-item-name{font-size:.9rem;font-weight:500;margin-bottom:.3rem}
+  .cart-item-price{color:var(--accent);font-family:'Bebas Neue',sans-serif;font-size:1.1rem}
+  .cart-item-qty{display:flex;align-items:center;gap:.5rem;margin-top:.5rem}
+  .qty-btn{background:var(--border);border:none;color:var(--text);width:24px;height:24px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:background .2s}
+  .qty-btn:hover{background:var(--muted)}
+  .qty-val{font-size:.85rem;min-width:20px;text-align:center}
+  .remove-btn{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:1rem;transition:color .2s;align-self:flex-start}
+  .remove-btn:hover{color:#ff3b3b}
+  .cart-empty{text-align:center;padding:4rem 2rem;color:var(--muted)}
+  .cart-empty-icon{font-size:3rem;margin-bottom:1rem}
+  .cart-footer{padding:2rem;border-top:1px solid var(--border)}
+  .cart-total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.5rem}
+  .cart-total-label{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.1em}
+  .cart-total-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--accent)}
+  .checkout-btn{width:100%;background:var(--accent);border:none;color:#000;padding:1rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s}
+  .checkout-btn:hover{background:#d4ff40;transform:translateY(-1px)}
+  .checkout-btn:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;transform:none}
+
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:400;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(6px)}
+  .modal-overlay.open{opacity:1;pointer-events:all}
+  .modal{background:var(--surface);border:1px solid var(--border);padding:2.5rem;width:100%;max-width:420px;position:relative;animation:fadeUp .3s ease}
+  .modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.08em;margin-bottom:.3rem}
+  .modal-subtitle{color:var(--muted);font-size:.85rem;margin-bottom:2rem}
+  .modal-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:2rem}
+  .modal-tab{flex:1;padding:.6rem;background:transparent;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+  .modal-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .modal-close{position:absolute;top:1rem;right:1rem;background:transparent;border:1px solid var(--border);color:var(--muted);width:32px;height:32px;cursor:pointer;font-size:1rem;transition:all .2s;display:flex;align-items:center;justify-content:center}
+  .modal-close:hover{border-color:var(--text);color:var(--text)}
+  .form-group{margin-bottom:1.25rem}
+  .form-label{display:block;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+  .form-input{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:.75rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s}
+  .form-input:focus{border-color:var(--accent)}
+  .form-input::placeholder{color:#444}
+  .form-error{color:#ff5555;font-size:.8rem;margin-top:.75rem;display:none}
+  .form-error.show{display:block}
+  .btn-primary{width:100%;background:var(--accent);border:none;color:#000;padding:.85rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-top:.5rem}
+  .btn-primary:hover{background:#d4ff40}
+  .btn-primary:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+
+  .recap-box{background:var(--card);border:1px solid var(--border);padding:1rem;margin-bottom:1rem}
+  .recap-label{color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem}
+  .recap-item{display:flex;justify-content:space-between;padding:.2rem 0;font-size:.85rem;color:var(--muted)}
+  .recap-total{margin-top:.75rem;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--accent)}
+
+  .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--accent);color:#000;padding:.75rem 1.5rem;font-weight:500;font-size:.85rem;z-index:500;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .toast.error{background:#ff3b3b;color:#fff}
+
+  footer{margin-top:6rem;padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:.8rem}
+
+  ::-webkit-scrollbar{width:4px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--border)}
+
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+  @media(max-width:768px){
+    header{padding:0 1.5rem}
+    nav{display:none}
+    .hero{grid-template-columns:1fr;padding:3rem 1.5rem}
+    .hero-visual{display:none}
+    .filters-bar{padding:1.5rem;flex-direction:column;gap:1rem;align-items:flex-start}
+    .catalog{padding:2rem 1.5rem}
+    .products-grid{grid-template-columns:repeat(2,1fr)}
+    .cart-sidebar{width:100%}
+    footer{padding:2rem 1.5rem;flex-direction:column;gap:1rem}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">AP<span>EX</span></div>
+  <nav>
+    <a href="#" class="active">Boutique</a>
+    <a href="#">Collections</a>
+    <a href="#">À propos</a>
+    <a href="#">Contact</a>
+  </nav>
+  <div class="header-right">
+    <button class="user-btn" id="authBtn" onclick="handleAuthClick()">
+      <span id="authBtnIcon">👤</span>
+      <span id="authBtnLabel">Connexion</span>
+    </button>
+    <button class="cart-btn" onclick="toggleCart()">
+      🛒 Panier <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="hero-label">Nouvelle collection 2025</div>
+    <h1>Sport.<br><em>Rewired.</em></h1>
+    <p>Des accessoires tech pensés pour les athlètes modernes. Performance maximale, design minimaliste.</p>
+    <div class="hero-stats">
+      <div><div class="stat-val" id="statProducts">—</div><div class="stat-label">Produits</div></div>
+      <div><div class="stat-val">4.9★</div><div class="stat-label">Note moy.</div></div>
+      <div><div class="stat-val">24h</div><div class="stat-label">Livraison</div></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-circle"></div>
+    <div class="hero-circle hero-circle-2"></div>
+    <div class="hero-icon">⌚</div>
+  </div>
+</section>
+
+<div class="filters-bar">
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterProducts('all',this)">Tout</button>
+    <button class="filter-btn" onclick="filterProducts('sport',this)">Sport</button>
+    <button class="filter-btn" onclick="filterProducts('tech',this)">Tech</button>
+    <button class="filter-btn" onclick="filterProducts('audio',this)">Audio</button>
+    <button class="filter-btn" onclick="filterProducts('tracking',this)">Tracking</button>
+  </div>
+  <select class="sort-select" onchange="sortProducts(this.value)">
+    <option value="default">Trier par défaut</option>
+    <option value="price-asc">Prix croissant</option>
+    <option value="price-desc">Prix décroissant</option>
+  </select>
+</div>
+
+<section class="catalog">
+  <div class="catalog-header">
+    <h2 class="catalog-title">Catalogue</h2>
+    <span class="catalog-count" id="catalogCount">Chargement…</span>
+  </div>
+  <div class="api-banner" id="apiBanner"><div class="api-dot"></div><span id="apiBannerText"></span></div>
+  <div class="products-grid" id="productsGrid">
+    <div class="grid-loader"><div class="spinner"></div> Connexion à l'API…</div>
+  </div>
+</section>
+
+<!-- PANIER -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <span class="cart-title">Votre panier</span>
+    <button class="close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-val" id="cartTotal">0,00 €</span>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()" disabled>Passer la commande →</button>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+    <div class="modal-title">APEX</div>
+    <div class="modal-subtitle">Accédez à votre compte pour commander</div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tabLogin" onclick="switchTab('login')">Connexion</button>
+      <button class="modal-tab" id="tabRegister" onclick="switchTab('register')">Inscription</button>
+    </div>
+    <div id="loginForm">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="loginEmail" placeholder="votre@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mot de passe</label>
+        <input class="form-input" type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
+      </div>
+      <div class="form-error" id="loginError"></div>
+      <button class="btn-primary" id="loginBtn" onclick="login()">Se connecter →</button>
+    </div>
+    <div id="registerForm" style="display:none">
+      <div class="form-group">
+        <label class="form-label">Nom complet</label>
+        <input class="form-input" type="text" id="regName" placeholder="Jean Dupont">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="regEmail" placeholder="votre@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mot de passe</label>
+        <input class="form-input" type="password" id="regPassword" placeholder="Min. 8 caractères" onkeydown="if(event.key==='Enter')register()">
+      </div>
+      <div class="form-error" id="registerError"></div>
+      <button class="btn-primary" id="registerBtn" onclick="register()">Créer mon compte →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('checkoutModal')">✕</button>
+    <div class="modal-title">Commande</div>
+    <div class="modal-subtitle">Livraison & confirmation</div>
+    <div class="form-group">
+      <label class="form-label">Adresse de livraison</label>
+      <input class="form-input" type="text" id="orderAddress" placeholder="12 rue de la Paix, 75001 Paris">
+    </div>
+    <div class="recap-box">
+      <div class="recap-label">Récapitulatif</div>
+      <div id="checkoutSummary"></div>
+      <div class="recap-total" id="checkoutTotalDisplay"></div>
+    </div>
+    <div class="form-error" id="checkoutError"></div>
+    <button class="btn-primary" id="confirmOrderBtn" onclick="confirmOrder()">✅ Confirmer la commande →</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <div>© 2025 APEX Sport & Tech</div>
+  <div>Livraison gratuite dès 50€ · Retours 30 jours · Paiement sécurisé</div>
+</footer>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────
+const API = 'http://localhost:8000';
+
+const DEMO = [
+  {id:1,name:"Montre connectée ProFit X3",category:"tracking",emoji:"⌚",price:89.99,original_price:null,stock:15,badge:"new"},
+  {id:2,name:"Écouteurs Sport TWS Pro",category:"audio",emoji:"🎧",price:59.99,original_price:79.99,stock:8,badge:"sale"},
+  {id:3,name:"Ceinture cardio Bluetooth",category:"tracking",emoji:"💓",price:44.99,original_price:null,stock:22,badge:null},
+  {id:4,name:"Bouteille connectée HydroSmart",category:"sport",emoji:"🍶",price:34.99,original_price:null,stock:3,badge:"hot"},
+  {id:5,name:"Bandes élastiques Smart Set",category:"sport",emoji:"🏋️",price:27.99,original_price:null,stock:50,badge:null},
+  {id:6,name:"Balance intelligente BodyComp",category:"tech",emoji:"⚖️",price:69.99,original_price:89.99,stock:11,badge:"sale"},
+  {id:7,name:"Tapis de yoga connecté",category:"sport",emoji:"🧘",price:119.99,original_price:null,stock:6,badge:"new"},
+  {id:8,name:"Lampe récup LED Therapy",category:"tech",emoji:"💡",price:79.99,original_price:null,stock:9,badge:null},
+];
+
+// ── STATE ───────────────────────────────────────────────────────
+let allProducts=[], cart=[], currentFilter='all', currentSort='default', apiOnline=false;
+let currentUser = JSON.parse(localStorage.getItem('apex_user')||'null');
+let authToken   = localStorage.getItem('apex_token')||null;
+
+// ── API ─────────────────────────────────────────────────────────
+async function apiFetch(path, opts={}) {
+  const headers = {'Content-Type':'application/json',...opts.headers};
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+  const res = await fetch(API+path, {...opts, headers});
+  if (!res.ok) { const e=await res.json().catch(()=>({})); throw new Error(e.detail||`Erreur ${res.status}`); }
+  return res.json();
+}
+
+// ── INIT ────────────────────────────────────────────────────────
+async function init() {
+  updateAuthUI();
+  updateCart();
+  try {
+    const data = await apiFetch('/products');
+    allProducts = data; apiOnline = true;
+    setBanner('online', `✓ API connectée — ${data.length} produits depuis la base de données`);
+    document.getElementById('statProducts').textContent = data.length+'+';
+  } catch(e) {
+    allProducts = DEMO; apiOnline = false;
+    setBanner('offline', '⚠ API hors ligne — données de démo affichées. Lancez : uvicorn main:app --reload');
+    document.getElementById('statProducts').textContent = '200+';
+  }
+  renderProducts();
+}
+
+function setBanner(type, msg) {
+  const b = document.getElementById('apiBanner');
+  b.style.display='flex'; b.className=`api-banner ${type}`;
+  document.getElementById('apiBannerText').textContent = msg;
+}
+
+// ── PRODUITS ────────────────────────────────────────────────────
+function getFiltered() {
+  let list = currentFilter==='all' ? [...allProducts] : allProducts.filter(p=>p.category===currentFilter);
+  if (currentSort==='price-asc')  list.sort((a,b)=>a.price-b.price);
+  if (currentSort==='price-desc') list.sort((a,b)=>b.price-a.price);
+  return list;
+}
+
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  const list = getFiltered();
+  document.getElementById('catalogCount').textContent = `${list.length} produit${list.length>1?'s':''}`;
+  if (!list.length) { grid.innerHTML=`<div class="grid-loader">Aucun produit</div>`; return; }
+  const badges = {new:'Nouveau',sale:'Promo',hot:'Populaire'};
+  grid.innerHTML = list.map((p,i)=>`
+    <div class="product-card" style="animation-delay:${i*.05}s">
+      ${p.badge?`<span class="badge badge-${p.badge}">${badges[p.badge]}</span>`:''}
+      <div class="product-img-wrap">
+        <div class="product-emoji">${p.emoji||'📦'}</div>
+        <div class="card-actions">
+          <button class="btn-add" onclick="addToCart(${p.id})">+ Ajouter</button>
+          <button class="btn-wish">♡</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="product-category">${{sport:'Sport',tech:'Tech',audio:'Audio',tracking:'Tracking'}[p.category]||p.category}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-price">
+          ${p.price.toFixed(2).replace('.',',')} €
+          ${p.original_price?`<span class="original">${p.original_price.toFixed(2).replace('.',',')} €</span>`:''}
+        </div>
+        <div class="product-stock ${p.stock<=5?'low':''}">${p.stock<=5?`⚡ Plus que ${p.stock} en stock`:`En stock (${p.stock})`}</div>
+      </div>
+    </div>`).join('');
+}
+
+function filterProducts(cat,btn) {
+  currentFilter=cat;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts();
+}
+
+function sortProducts(val) { currentSort=val; renderProducts(); }
+
+// ── PANIER ──────────────────────────────────────────────────────
+function addToCart(id) {
+  const p = allProducts.find(p=>p.id===id); if(!p) return;
+  const ex = cart.find(i=>i.id===id);
+  if (ex) { if(ex.qty>=p.stock){showToast('⚠ Stock max atteint',true);return;} ex.qty++; }
+  else cart.push({...p,qty:1});
+  updateCart(); showToast(`${p.emoji} ${p.name} ajouté !`);
+}
+
+function removeFromCart(id) { cart=cart.filter(i=>i.id!==id); updateCart(); }
+
+function changeQty(id,d) {
+  const item=cart.find(i=>i.id===id); if(!item) return;
+  item.qty+=d;
+  if(item.qty<=0) removeFromCart(id); else updateCart();
+}
+
+function updateCart() {
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartCount').textContent=count;
+  document.getElementById('cartTotal').textContent=fmt(total);
+  document.getElementById('checkoutBtn').disabled=cart.length===0;
+  const c=document.getElementById('cartItems');
+  if(!cart.length){ c.innerHTML=`<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Votre panier est vide.</p></div>`; return; }
+  c.innerHTML=cart.map(item=>`
+    <div class="cart-item">
+      <div class="cart-item-emoji">${item.emoji||'📦'}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${fmt(item.price*item.qty)}</div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="qty-val">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},+1)">+</button>
+        </div>
+      </div>
+      <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
+    </div>`).join('');
+}
+
+// ── AUTH ────────────────────────────────────────────────────────
+function handleAuthClick() {
+  if(currentUser){ if(confirm(`Déconnexion de ${currentUser.full_name} ?`)) logout(); }
+  else openModal('authModal');
+}
+
+function logout() {
+  currentUser=null; authToken=null;
+  localStorage.removeItem('apex_user'); localStorage.removeItem('apex_token');
+  updateAuthUI(); showToast('👋 Déconnecté');
+}
+
+function updateAuthUI() {
+  const btn=document.getElementById('authBtn');
+  const logged=!!currentUser;
+  btn.classList.toggle('logged',logged);
+  document.getElementById('authBtnIcon').textContent=logged?'✅':'👤';
+  document.getElementById('authBtnLabel').textContent=logged?currentUser.full_name.split(' ')[0]:'Connexion';
+}
+
+async function login() {
+  const email=document.getElementById('loginEmail').value.trim();
+  const pw=document.getElementById('loginPassword').value;
+  const err=document.getElementById('loginError');
+  const btn=document.getElementById('loginBtn');
+  err.classList.remove('show');
+  if(!email||!pw){showErr(err,'Veuillez remplir tous les champs');return;}
+  btn.disabled=true; btn.textContent='Connexion…';
+  try {
+    const form=new URLSearchParams({username:email,password:pw});
+    const res=await fetch(`${API}/auth/login`,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:form});
+    if(!res.ok){const e=await res.json();throw new Error(e.detail);}
+    const data=await res.json();
+    authToken=data.access_token; currentUser=data.user;
+    localStorage.setItem('apex_token',authToken);
+    localStorage.setItem('apex_user',JSON.stringify(currentUser));
+    updateAuthUI(); closeModal('authModal');
+    showToast(`🎉 Bienvenue ${currentUser.full_name} !`);
+  } catch(e){ showErr(err,e.message||'Erreur de connexion'); }
+  finally{ btn.disabled=false; btn.textContent='Se connecter →'; }
+}
+
+async function register() {
+  const name=document.getElementById('regName').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const pw=document.getElementById('regPassword').value;
+  const err=document.getElementById('registerError');
+  const btn=document.getElementById('registerBtn');
+  err.classList.remove('show');
+  if(!name||!email||!pw){showErr(err,'Veuillez remplir tous les champs');return;}
+  if(pw.length<8){showErr(err,'Mot de passe : 8 caractères minimum');return;}
+  btn.disabled=true; btn.textContent='Création…';
+  try {
+    await apiFetch('/auth/register',{method:'POST',body:JSON.stringify({full_name:name,email,password:pw})});
+    showToast('✅ Compte créé ! Email de bienvenue envoyé.');
+    document.getElementById('loginEmail').value=email;
+    document.getElementById('loginPassword').value=pw;
+    switchTab('login'); await login();
+  } catch(e){ showErr(err,e.message||'Erreur de création'); }
+  finally{ btn.disabled=false; btn.textContent='Créer mon compte →'; }
+}
+
+// ── COMMANDE ────────────────────────────────────────────────────
+function checkout() {
+  if(!currentUser){ showToast('👤 Connectez-vous pour commander',true); openModal('authModal'); return; }
+  toggleCart();
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  document.getElementById('checkoutSummary').innerHTML=cart.map(i=>
+    `<div class="recap-item"><span>${i.emoji} ${i.name} ×${i.qty}</span><span>${fmt(i.price*i.qty)}</span></div>`
+  ).join('');
+  document.getElementById('checkoutTotalDisplay').textContent=`Total : ${fmt(total)}`;
+  openModal('checkoutModal');
+}
+
+async function confirmOrder() {
+  const address=document.getElementById('orderAddress').value.trim();
+  const err=document.getElementById('checkoutError');
+  const btn=document.getElementById('confirmOrderBtn');
+  err.classList.remove('show');
+  if(!address){showErr(err,'Veuillez entrer une adresse');return;}
+  btn.disabled=true; btn.textContent='Confirmation…';
+  try {
+    const order=await apiFetch('/orders',{method:'POST',body:JSON.stringify({address,items:cart.map(i=>({product_id:i.id,quantity:i.qty}))})});
+    cart=[]; updateCart(); closeModal('checkoutModal');
+    showToast(`🎉 Commande #${order.id} confirmée ! Email envoyé.`);
+  } catch(e) {
+    if(!apiOnline){
+      cart=[]; updateCart(); closeModal('checkoutModal');
+      showToast('🎉 Commande simulée avec succès !');
+    } else { showErr(err,e.message||'Erreur commande'); }
+  }
+  finally{ btn.disabled=false; btn.textContent='✅ Confirmer la commande →'; }
+}
+
+// ── HELPERS ─────────────────────────────────────────────────────
+function fmt(n){ return n.toFixed(2).replace('.',',')+' €'; }
+function toggleCart(){ document.getElementById('cartSidebar').classList.toggle('open'); document.getElementById('cartOverlay').classList.toggle('open'); }
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function switchTab(t){
+  document.getElementById('loginForm').style.display=t==='login'?'block':'none';
+  document.getElementById('registerForm').style.display=t==='register'?'block':'none';
+  document.getElementById('tabLogin').classList.toggle('active',t==='login');
+  document.getElementById('tabRegister').classList.toggle('active',t==='register');
+}
+function showErr(el,msg){ el.textContent=msg; el.classList.add('show'); }
+function showToast(msg,isErr=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast'+(isErr?' error':''); t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+
+init();
+</script>
+</body>
+</html>
