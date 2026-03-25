@@ -5,59 +5,72 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>APEX — Sport & Tech</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#0a0a0a;--surface:#111;--border:#1e1e1e;--accent:#c8f135;--accent2:#3bffd8;--text:#f0f0f0;--muted:#666;--card:#141414; }
+  :root { --bg:#0a0a0a;--surface:#111;--border:#1e1e1e;--accent:#3B82F6;--accent-hover:#60a5fa;--accent2:#3bffd8;--text:#f0f0f0;--muted:#666;--card:#141414; }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
   body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:.4}
 
-  header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 4rem;height:72px;background:rgba(10,10,10,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-  .logo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.1em}
+  /* ── HEADER ── */
+  .top-header{position:static;z-index:100;background:rgba(10,10,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+  .header-main{display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:68px;gap:2rem}
+  .logo{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:.12em;flex-shrink:0;cursor:pointer}
   .logo span{color:var(--accent)}
-  nav{display:flex;gap:2.5rem}
-  nav a{text-decoration:none;color:var(--muted);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
-  nav a:hover,nav a.active{color:var(--text)}
-  .header-right{display:flex;align-items:center;gap:1rem}
-  .user-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.45rem 1rem;font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.4rem}
-  .user-btn:hover{border-color:var(--accent);color:var(--accent)}
-  .user-btn.logged{border-color:var(--accent);color:var(--accent)}
-  .cart-btn{display:flex;align-items:center;gap:.5rem;background:var(--accent);color:#000;border:none;padding:.5rem 1.2rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.85rem;cursor:pointer;transition:background .2s,transform .15s}
-  .cart-btn:hover{background:#d4ff40;transform:translateY(-1px)}
-  .cart-count{background:#000;color:var(--accent);border-radius:50%;width:18px;height:18px;font-size:.7rem;display:flex;align-items:center;justify-content:center;font-weight:500}
+  .search-bar{flex:1;max-width:560px;position:relative}
+  .search-bar input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:.65rem 1rem .65rem 2.8rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;border-radius:2px}
+  .search-bar input:focus{border-color:var(--accent)}
+  .search-bar input::placeholder{color:#555}
+  .search-bar svg{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--muted);width:18px;height:18px}
+  .header-icons{display:flex;align-items:center;gap:.25rem;flex-shrink:0}
+  .icon-btn{background:transparent;border:none;color:var(--muted);width:42px;height:42px;cursor:pointer;font-size:1.15rem;display:flex;align-items:center;justify-content:center;transition:color .2s;position:relative;border-radius:2px}
+  .icon-btn:hover{color:var(--text)}
+  .icon-btn.active-user{color:var(--accent)}
+  .icon-btn .badge-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;display:none}
+  .icon-btn .badge-dot.visible{display:block}
+  .cart-badge{position:absolute;top:4px;right:2px;background:var(--accent);color:#fff;font-size:.65rem;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px}
 
-  .hero{padding:6rem 4rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
-  .hero::after{content:'APEX';position:absolute;right:-2rem;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:22rem;color:rgba(255,255,255,.015);pointer-events:none}
-  .hero-label{font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem}
-  .hero-label::before{content:'';width:2rem;height:1px;background:var(--accent)}
-  .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,6vw,6rem);line-height:.95;margin-bottom:1.5rem}
+  /* ── NAV ── */
+  .main-nav{border-bottom:1px solid var(--border);padding:0 3rem;overflow-x:auto}
+  .main-nav::-webkit-scrollbar{display:none}
+  .nav-links{display:flex;gap:0;list-style:none;justify-content:center}
+  .nav-links a{display:block;text-decoration:none;color:var(--muted);font-size:.78rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:.85rem 1.4rem;transition:color .2s,box-shadow .2s;white-space:nowrap}
+  .nav-links a:hover,.nav-links a.active{color:var(--text);box-shadow:inset 0 -2px 0 var(--accent)}
+
+  /* ── HERO ── */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:visible;border-bottom:1px solid var(--border)}
+  .hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0a0a0a 0%,#0f1628 40%,#0a0a0a 100%);z-index:0}
+  .hero-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(59,130,246,.12) 0%,transparent 70%)}
+  .hero-content{position:relative;z-index:1;max-width:800px;padding:5rem 2rem;display:flex;flex-direction:column;align-items:center}
+  .hero-label{font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;display:inline-flex;align-items:center;gap:.75rem}
+  .hero-label::before,.hero-label::after{content:'';width:2.5rem;height:1px;background:var(--accent);opacity:.5}
+  .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,8rem);line-height:.92;margin-bottom:1.5rem;letter-spacing:.04em}
   .hero h1 em{font-style:normal;color:var(--accent);display:block}
-  .hero p{color:var(--muted);font-size:1rem;line-height:1.7;max-width:420px;margin-bottom:2.5rem}
-  .hero-stats{display:flex;gap:3rem}
+  .hero p{color:var(--muted);font-size:1.05rem;line-height:1.7;max-width:500px;margin:0 auto 2.5rem}
+  .hero-cta{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:1rem 2.8rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:.12em;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s,transform .15s}
+  .hero-cta:hover{background:var(--accent-hover);transform:translateY(-2px)}
+  .hero-stats{display:flex;justify-content:center;gap:4rem;margin-top:3.5rem}
   .stat-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--accent);line-height:1}
-  .stat-label{font-size:.75rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.25rem}
-  .hero-visual{display:flex;align-items:center;justify-content:center;height:380px;position:relative}
-  .hero-circle{width:320px;height:320px;border-radius:50%;border:1px solid var(--border);position:absolute;animation:spin 20s linear infinite}
-  .hero-circle::before{content:'';position:absolute;top:-3px;left:50%;width:6px;height:6px;background:var(--accent);border-radius:50%;transform:translateX(-50%)}
-  .hero-circle-2{width:220px;height:220px;animation-duration:15s;animation-direction:reverse}
-  .hero-icon{font-size:5rem;z-index:1;filter:drop-shadow(0 0 40px rgba(200,241,53,.3));animation:float 4s ease-in-out infinite}
+  .stat-label{font-size:.72rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.25rem}
 
-  .filters-bar{padding:2rem 4rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+  /* ── FILTERS ── */
+  .filters-bar{padding:2rem 3rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
   .filters{display:flex;gap:.5rem}
   .filter-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.4rem 1rem;font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;transition:all .2s}
   .filter-btn:hover,.filter-btn.active{border-color:var(--accent);color:var(--accent)}
   .sort-select{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.4rem 1rem;font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;outline:none}
   .sort-select option{background:var(--surface)}
 
-  .catalog{padding:3rem 4rem}
+  /* ── CATALOG ── */
+  .catalog{padding:3rem}
   .catalog-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem}
   .catalog-title{font-family:'Bebas Neue',sans-serif;font-size:2rem}
   .catalog-count{color:var(--muted);font-size:.85rem}
 
   .api-banner{margin-bottom:1.5rem;padding:.65rem 1rem;font-size:.78rem;display:none;align-items:center;gap:.6rem;border:1px solid}
   .api-banner.offline{border-color:#ff3b3b33;background:#ff3b3b11;color:#ff8080}
-  .api-banner.online{border-color:#c8f13533;background:#c8f13511;color:var(--accent)}
+  .api-banner.online{border-color:#3B82F633;background:#3B82F611;color:var(--accent)}
   .api-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
   .api-banner.offline .api-dot{background:#ff3b3b}
   .api-banner.online .api-dot{background:var(--accent);animation:blink 2s infinite}
@@ -69,15 +82,18 @@
   .product-card:hover .card-actions{opacity:1;transform:translateY(0)}
   .product-card:hover .product-emoji{transform:scale(1.08) translateY(-6px)}
   .badge{position:absolute;top:1rem;left:1rem;z-index:2;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;padding:.25rem .6rem;font-weight:500}
-  .badge-new{background:var(--accent);color:#000}
+  .badge-new{background:var(--accent);color:#fff}
   .badge-sale{background:#ff3b3b;color:#fff}
   .badge-hot{background:var(--accent2);color:#000}
   .product-img-wrap{height:240px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f0f0f,#1a1a1a);position:relative}
   .product-emoji{font-size:4.5rem;transition:transform .5s ease;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5))}
+  .product-img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+  .product-card:hover .product-img{transform:scale(1.05)}
   .card-actions{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.8));padding:1rem;opacity:0;transform:translateY(8px);transition:all .25s ease;display:flex;gap:.5rem}
-  .btn-add{flex:1;background:var(--accent);border:none;color:#000;padding:.6rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.8rem;cursor:pointer;transition:background .2s;text-transform:uppercase}
-  .btn-add:hover{background:#d4ff40}
-  .btn-wish{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:var(--text);width:36px;cursor:pointer;font-size:1rem;transition:background .2s}
+  .btn-add{flex:1;background:var(--accent);border:none;color:#fff;padding:.6rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.8rem;cursor:pointer;transition:background .2s;text-transform:uppercase}
+  .btn-add:hover{background:var(--accent-hover)}
+  .btn-wish{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:var(--text);width:36px;cursor:pointer;font-size:1rem;transition:all .2s}
+  .btn-wish.favorited{background:rgba(255,50,80,.2);border-color:rgba(255,50,80,.4);color:#ff5580}
   .card-body{padding:1.25rem}
   .product-category{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
   .product-name{font-size:.95rem;font-weight:500;margin-bottom:.75rem;line-height:1.3}
@@ -89,6 +105,7 @@
   .grid-loader{grid-column:1/-1;display:flex;align-items:center;justify-content:center;padding:5rem;color:var(--muted);gap:.75rem;background:var(--card)}
   .spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
 
+  /* ── CART SIDEBAR ── */
   .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(4px)}
   .cart-overlay.open{opacity:1;pointer-events:all}
   .cart-sidebar{position:fixed;top:0;right:0;width:420px;height:100vh;background:var(--surface);border-left:1px solid var(--border);z-index:201;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
@@ -115,10 +132,11 @@
   .cart-total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.5rem}
   .cart-total-label{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.1em}
   .cart-total-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--accent)}
-  .checkout-btn{width:100%;background:var(--accent);border:none;color:#000;padding:1rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s}
-  .checkout-btn:hover{background:#d4ff40;transform:translateY(-1px)}
+  .checkout-btn{width:100%;background:var(--accent);border:none;color:#fff;padding:1rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s}
+  .checkout-btn:hover{background:var(--accent-hover);transform:translateY(-1px)}
   .checkout-btn:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;transform:none}
 
+  /* ── MODALS ── */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:400;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(6px)}
   .modal-overlay.open{opacity:1;pointer-events:all}
   .modal{background:var(--surface);border:1px solid var(--border);padding:2.5rem;width:100%;max-width:420px;position:relative;animation:fadeUp .3s ease}
@@ -136,8 +154,8 @@
   .form-input::placeholder{color:#444}
   .form-error{color:#ff5555;font-size:.8rem;margin-top:.75rem;display:none}
   .form-error.show{display:block}
-  .btn-primary{width:100%;background:var(--accent);border:none;color:#000;padding:.85rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-top:.5rem}
-  .btn-primary:hover{background:#d4ff40}
+  .btn-primary{width:100%;background:var(--accent);border:none;color:#fff;padding:.85rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-top:.5rem}
+  .btn-primary:hover{background:var(--accent-hover)}
   .btn-primary:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
 
   .recap-box{background:var(--card);border:1px solid var(--border);padding:1rem;margin-bottom:1rem}
@@ -145,98 +163,207 @@
   .recap-item{display:flex;justify-content:space-between;padding:.2rem 0;font-size:.85rem;color:var(--muted)}
   .recap-total{margin-top:.75rem;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--accent)}
 
-  .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--accent);color:#000;padding:.75rem 1.5rem;font-weight:500;font-size:.85rem;z-index:500;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}
+  .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--accent);color:#fff;padding:.75rem 1.5rem;font-weight:500;font-size:.85rem;z-index:500;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}
   .toast.show{transform:translateX(-50%) translateY(0)}
   .toast.error{background:#ff3b3b;color:#fff}
 
-  footer{margin-top:6rem;padding:3rem 4rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:.8rem}
+  /* ── PAGE PRODUIT PLEIN ÉCRAN ── */
+  #pdpView{display:none;animation:fadeUp .25s ease}
+  .pdp-breadcrumb-bar{padding:1rem 3rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--muted)}
+  .pdp-back{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;display:flex;align-items:center;gap:.4rem;padding:0;transition:color .2s;font-family:'DM Sans',sans-serif}
+  .pdp-back:hover{color:var(--text)}
+  .pdp-back svg{width:16px;height:16px}
+  .pdp-breadcrumb-bar .sep{opacity:.3}
+  .pdp-breadcrumb-bar .current{color:var(--text)}
+  .pdp-layout{display:grid;grid-template-columns:55% 45%;min-height:calc(100vh - 180px)}
+  .pdp-gallery{background:#0a0a0a;border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:calc(100vh - 180px)}
+  .pdp-main-img{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+  .pdp-main-img img{max-width:90%;max-height:90%;object-fit:contain;transition:transform .4s ease;cursor:pointer}
+  .pdp-main-img img:hover{transform:scale(1.02)}
+  .pdp-main-img .pdp-emoji{font-size:8rem;filter:drop-shadow(0 10px 40px rgba(0,0,0,.6))}
+  .pdp-thumbs{display:flex;gap:.6rem;padding:1rem 1.5rem;border-top:1px solid var(--border);overflow-x:auto;flex-shrink:0}
+  .pdp-thumbs::-webkit-scrollbar{height:3px}
+  .pdp-thumbs::-webkit-scrollbar-thumb{background:var(--border)}
+  .pdp-thumb{width:72px;height:72px;flex-shrink:0;border:1px solid var(--border);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#111;transition:border-color .2s;font-size:1.8rem}
+  .pdp-thumb.active{border-color:var(--accent)}
+  .pdp-thumb img{width:100%;height:100%;object-fit:cover}
+  .pdp-info{padding:3rem 3.5rem;overflow-y:auto;height:calc(100vh - 180px)}
+  .pdp-info::-webkit-scrollbar{width:4px}
+  .pdp-info::-webkit-scrollbar-thumb{background:var(--border)}
+  .pdp-badge-inline{display:inline-block;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;padding:.25rem .6rem;font-weight:500;margin-bottom:1rem}
+  .pdp-badge-inline.badge-new{background:var(--accent);color:#fff}
+  .pdp-badge-inline.badge-sale{background:#ff3b3b;color:#fff}
+  .pdp-badge-inline.badge-hot{background:var(--accent2);color:#000}
+  .pdp-cat{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+  .pdp-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,3vw,3rem);line-height:1;letter-spacing:.03em;margin-bottom:1.5rem}
+  .pdp-price-row{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.75rem}
+  .pdp-price{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--accent)}
+  .pdp-price-original{font-size:1rem;color:var(--muted);text-decoration:line-through}
+  .pdp-stock-info{font-size:.78rem;color:var(--muted);margin-bottom:2rem}
+  .pdp-stock-info.low{color:#ff8c42}
+  .pdp-section-label{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem}
+  .pdp-sizes{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem}
+  .size-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.5rem .9rem;font-family:'DM Sans',sans-serif;font-size:.82rem;cursor:pointer;transition:all .2s;min-width:48px;text-align:center}
+  .size-btn:hover{border-color:var(--text);color:var(--text)}
+  .size-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,.08)}
+  .pdp-actions{display:flex;gap:.75rem;margin-bottom:2.5rem}
+  .pdp-btn-add{flex:1;background:var(--accent);border:none;color:#fff;padding:1rem 1.5rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s}
+  .pdp-btn-add:hover{background:var(--accent-hover);transform:translateY(-1px)}
+  .pdp-btn-wish{background:transparent;border:1px solid var(--border);color:var(--muted);width:52px;cursor:pointer;font-size:1.2rem;transition:all .2s}
+  .pdp-btn-wish:hover,.pdp-btn-wish.favorited{border-color:#ff5580;color:#ff5580}
+  .pdp-btn-wish.favorited{background:rgba(255,50,80,.08)}
+  .pdp-desc-block{border-top:1px solid var(--border);padding-top:1.75rem;margin-bottom:2rem}
+  .pdp-desc-text{color:#999;font-size:.9rem;line-height:1.85}
+  .pdp-delivery{display:flex;flex-direction:column;gap:.75rem;border-top:1px solid var(--border);padding-top:1.75rem}
+  .pdp-delivery-row{display:flex;align-items:center;gap:.75rem;font-size:.82rem;color:var(--muted)}
+  .pdp-delivery-row svg{width:16px;height:16px;flex-shrink:0;color:var(--accent)}
+  @media(max-width:900px){
+    .pdp-layout{grid-template-columns:1fr}
+    .pdp-gallery{position:relative;height:60vw;min-height:280px}
+    .pdp-info{height:auto;padding:2rem 1.5rem}
+    .pdp-breadcrumb-bar{padding:1rem 1.5rem}
+    .pdp-gallery-with-thumbs{flex-direction:column-reverse}
+    .pdp-thumbs-vertical{flex-direction:row;border-right:none;border-top:1px solid var(--border);overflow-x:auto;overflow-y:hidden}
+  }
+
+  /* ── COLOR SWATCHES ── */
+  .pdp-colors{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2rem}
+  .color-swatch{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);cursor:pointer;transition:all .2s;position:relative}
+  .color-swatch:hover{border-color:var(--muted);transform:scale(1.1)}
+  .color-swatch.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,.25)}
+  .color-swatch-label{font-size:.75rem;color:var(--muted);margin-top:.25rem}
+
+  /* ── PDP GALLERY VERTICAL THUMBS ── */
+  .pdp-gallery-with-thumbs{display:flex;flex-direction:row;height:100%}
+  .pdp-thumbs-vertical{display:flex;flex-direction:column;gap:.6rem;padding:1rem;border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0}
+  .pdp-thumbs-vertical::-webkit-scrollbar{width:3px}
+  .pdp-thumbs-vertical::-webkit-scrollbar-thumb{background:var(--border)}
+  .pdp-thumbs-vertical .pdp-thumb{width:72px;height:72px}
+  .pdp-gallery-main{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+  .pdp-gallery-main img{max-width:90%;max-height:90%;object-fit:contain;transition:transform .4s ease;cursor:pointer}
+  .pdp-gallery-main img:hover{transform:scale(1.02)}
+  .pdp-gallery-main .pdp-emoji{font-size:8rem;filter:drop-shadow(0 10px 40px rgba(0,0,0,.6))}
+
+  /* ── LIGHTBOX ── */
+  .lightbox-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(8px);cursor:pointer}
+  .lightbox-overlay.open{opacity:1;pointer-events:all}
+  .lightbox-overlay img{max-width:85vw;max-height:85vh;object-fit:contain;border:1px solid var(--border);cursor:default}
+  .lightbox-close{position:absolute;top:1.5rem;right:1.5rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;width:40px;height:40px;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:501}
+  .lightbox-close:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3)}
+
+  /* ── CATEGORY PAGE ── */
+  #categoryView{display:none;animation:fadeUp .25s ease}
+  .cat-header-bar{padding:1.5rem 3rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:1rem}
+  .cat-back{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:.85rem;display:flex;align-items:center;gap:.4rem;padding:0;transition:color .2s;font-family:'DM Sans',sans-serif}
+  .cat-back:hover{color:var(--text)}
+  .cat-back svg{width:16px;height:16px}
+  .cat-title-bar{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.05em}
+  .cat-count-bar{color:var(--muted);font-size:.82rem}
+  .cat-page-grid{padding:2rem 3rem}
+  .cat-products{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5px;background:var(--border)}
+  @media(max-width:768px){
+    .cat-header-bar{padding:1rem 1.5rem}
+    .cat-page-grid{padding:1.5rem 1rem}
+  }
+
+  /* ── SECTIONS CATALOGUE ── */
+  .catalog-section{padding:3rem 3rem 1rem;border-bottom:1px solid var(--border)}
+  .catalog-section:last-of-type{border-bottom:none}
+  .section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.5rem}
+  .section-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.04em}
+  .section-count{color:var(--muted);font-size:.82rem}
+  .section-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5px;background:var(--border)}
+  .section-see-more{display:flex;justify-content:center;padding:2rem 0 1rem}
+  .btn-see-more{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.6rem 2rem;font-family:'DM Sans',sans-serif;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+  .btn-see-more:hover{border-color:var(--accent);color:var(--accent)}
+
+  footer{margin-top:6rem;padding:3rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:.8rem}
 
   ::-webkit-scrollbar{width:4px}
   ::-webkit-scrollbar-track{background:var(--bg)}
   ::-webkit-scrollbar-thumb{background:var(--border)}
 
   @keyframes spin{to{transform:rotate(360deg)}}
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
   @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
   @keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 
   @media(max-width:768px){
-    header{padding:0 1.5rem}
-    nav{display:none}
-    .hero{grid-template-columns:1fr;padding:3rem 1.5rem}
-    .hero-visual{display:none}
+    .header-main{padding:0 1rem;gap:1rem}
+    .search-bar{max-width:none}
+    .main-nav{padding:0 1rem}
+    .hero{height:60vh;min-height:400px}
+    .hero h1{font-size:clamp(3rem,10vw,5rem)}
+    .hero-stats{gap:2rem}
     .filters-bar{padding:1.5rem;flex-direction:column;gap:1rem;align-items:flex-start}
-    .catalog{padding:2rem 1.5rem}
+    .catalog{padding:2rem 1rem}
     .products-grid{grid-template-columns:repeat(2,1fr)}
     .cart-sidebar{width:100%}
-    footer{padding:2rem 1.5rem;flex-direction:column;gap:1rem}
+    footer{padding:2rem 1rem;flex-direction:column;gap:1rem}
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">AP<span>EX</span></div>
-  <nav>
-    <a href="#" class="active">Boutique</a>
-    <a href="#">Collections</a>
-    <a href="#">À propos</a>
-    <a href="#">Contact</a>
-  </nav>
-  <div class="header-right">
-    <button class="user-btn" id="authBtn" onclick="handleAuthClick()">
-      <span id="authBtnIcon">👤</span>
-      <span id="authBtnLabel">Connexion</span>
-    </button>
-    <button class="cart-btn" onclick="toggleCart()">
-      🛒 Panier <span class="cart-count" id="cartCount">0</span>
-    </button>
+<!-- ── HEADER ── -->
+<div class="top-header">
+  <div class="header-main">
+    <div class="logo">AP<span>EX</span></div>
+    <div class="search-bar">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Rechercher un produit, une marque..." oninput="searchProducts(this.value)">
+    </div>
+    <div class="header-icons">
+      <button class="icon-btn" id="authBtn" onclick="handleAuthClick()" title="Mon compte">
+        <span id="authBtnIcon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
+        <span class="badge-dot" id="authDot"></span>
+      </button>
+      <button class="icon-btn" id="favBtn" onclick="showFavorites()" title="Favoris">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+      <button class="icon-btn" onclick="toggleCart()" title="Panier">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-badge" id="cartCount" style="display:none">0</span>
+      </button>
+    </div>
   </div>
-</header>
 
+  <!-- ── NAV ── -->
+  <nav class="main-nav">
+    <div class="nav-links">
+      <a href="#" onclick="openCategoryPage(event,this,'section-nouveautes')">Nouveaut&eacute;s</a>
+      <a href="#" onclick="openCategoryPage(event,this,'section-topventes')">Top ventes</a>
+      <a href="#" onclick="openCategoryPage(event,this,'section-vetements')">V&ecirc;tements</a>
+      <a href="#" onclick="openCategoryPage(event,this,'section-sport')">Sport</a>
+      <a href="#" onclick="openCategoryPage(event,this,'section-accessoires')">Accessoires</a>
+      <a href="#" onclick="openCategoryPage(event,this,'section-tech')">Tech</a>
+      <a href="#" onclick="openCategoryPage(event,this,'section-promos')">Promos</a>
+    </div>
+  </nav>
+</div>
+
+<div id="catalogView">
+<!-- ── HERO ── -->
 <section class="hero">
-  <div>
-    <div class="hero-label">Nouvelle collection 2025</div>
-    <h1>Sport.<br><em>Rewired.</em></h1>
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-label">Collection 2026</div>
+    <h1>Sport.<br><em>Redefined.</em></h1>
     <p>Des accessoires tech pensés pour les athlètes modernes. Performance maximale, design minimaliste.</p>
+    <a href="#section-nouveautes" class="hero-cta">Découvrir la collection</a>
     <div class="hero-stats">
       <div><div class="stat-val" id="statProducts">—</div><div class="stat-label">Produits</div></div>
       <div><div class="stat-val">4.9★</div><div class="stat-label">Note moy.</div></div>
       <div><div class="stat-val">24h</div><div class="stat-label">Livraison</div></div>
     </div>
   </div>
-  <div class="hero-visual">
-    <div class="hero-circle"></div>
-    <div class="hero-circle hero-circle-2"></div>
-    <div class="hero-icon">⌚</div>
-  </div>
 </section>
 
-<div class="filters-bar">
-  <div class="filters">
-    <button class="filter-btn active" onclick="filterProducts('all',this)">Tout</button>
-    <button class="filter-btn" onclick="filterProducts('sport',this)">Sport</button>
-    <button class="filter-btn" onclick="filterProducts('tech',this)">Tech</button>
-    <button class="filter-btn" onclick="filterProducts('audio',this)">Audio</button>
-    <button class="filter-btn" onclick="filterProducts('tracking',this)">Tracking</button>
-  </div>
-  <select class="sort-select" onchange="sortProducts(this.value)">
-    <option value="default">Trier par défaut</option>
-    <option value="price-asc">Prix croissant</option>
-    <option value="price-desc">Prix décroissant</option>
-  </select>
+<!-- ── CATALOGUE PAR SECTIONS ── -->
+<div id="catalogSections">
+  <div class="api-banner" id="apiBanner" style="margin:1rem 3rem 0"><div class="api-dot"></div><span id="apiBannerText"></span></div>
 </div>
-
-<section class="catalog">
-  <div class="catalog-header">
-    <h2 class="catalog-title">Catalogue</h2>
-    <span class="catalog-count" id="catalogCount">Chargement…</span>
-  </div>
-  <div class="api-banner" id="apiBanner"><div class="api-dot"></div><span id="apiBannerText"></span></div>
-  <div class="products-grid" id="productsGrid">
-    <div class="grid-loader"><div class="spinner"></div> Connexion à l'API…</div>
-  </div>
-</section>
 
 <!-- PANIER -->
 <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
@@ -251,7 +378,7 @@
       <span class="cart-total-label">Total</span>
       <span class="cart-total-val" id="cartTotal">0,00 €</span>
     </div>
-    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()" disabled>Passer la commande →</button>
+    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()" disabled>Passer la commande</button>
   </div>
 </div>
 
@@ -275,7 +402,7 @@
         <input class="form-input" type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
       </div>
       <div class="form-error" id="loginError"></div>
-      <button class="btn-primary" id="loginBtn" onclick="login()">Se connecter →</button>
+      <button class="btn-primary" id="loginBtn" onclick="login()">Se connecter</button>
     </div>
     <div id="registerForm" style="display:none">
       <div class="form-group">
@@ -291,7 +418,7 @@
         <input class="form-input" type="password" id="regPassword" placeholder="Min. 8 caractères" onkeydown="if(event.key==='Enter')register()">
       </div>
       <div class="form-error" id="registerError"></div>
-      <button class="btn-primary" id="registerBtn" onclick="register()">Créer mon compte →</button>
+      <button class="btn-primary" id="registerBtn" onclick="register()">Créer mon compte</button>
     </div>
   </div>
 </div>
@@ -312,14 +439,97 @@
       <div class="recap-total" id="checkoutTotalDisplay"></div>
     </div>
     <div class="form-error" id="checkoutError"></div>
-    <button class="btn-primary" id="confirmOrderBtn" onclick="confirmOrder()">✅ Confirmer la commande →</button>
+    <button class="btn-primary" id="confirmOrderBtn" onclick="confirmOrder()">Confirmer la commande</button>
   </div>
+</div>
+
+</div><!-- /#catalogView -->
+
+<!-- ── PAGE PRODUIT PLEIN ÉCRAN ── -->
+<div id="pdpView">
+  <div class="pdp-breadcrumb-bar">
+    <button class="pdp-back" onclick="closePdp()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Retour
+    </button>
+    <span class="sep">›</span>
+    <span id="pdpBreadCat"></span>
+    <span class="sep">›</span>
+    <span class="current" id="pdpBreadName"></span>
+  </div>
+  <div class="pdp-layout">
+    <div class="pdp-gallery" id="pdpGallery">
+      <div class="pdp-main-img" id="pdpMainImg"></div>
+      <div class="pdp-thumbs" id="pdpThumbs"></div>
+    </div>
+    <div class="pdp-info">
+      <div id="pdpBadgeEl"></div>
+      <div class="pdp-cat" id="pdpCat"></div>
+      <div class="pdp-name" id="pdpNameEl"></div>
+      <div class="pdp-price-row">
+        <span class="pdp-price" id="pdpPriceEl"></span>
+        <span class="pdp-price-original" id="pdpPriceOrig"></span>
+      </div>
+      <div class="pdp-stock-info" id="pdpStockEl"></div>
+      <div id="pdpColorsBlock" style="display:none">
+        <div class="pdp-section-label">Couleur — <span id="pdpColorName"></span></div>
+        <div class="pdp-colors" id="pdpColors"></div>
+      </div>
+      <div id="pdpSizesBlock" style="display:none">
+        <div class="pdp-section-label">Taille</div>
+        <div class="pdp-sizes" id="pdpSizes"></div>
+      </div>
+      <div class="pdp-actions">
+        <button class="pdp-btn-add" id="pdpBtnAdd">+ Ajouter au panier</button>
+        <button class="pdp-btn-wish" id="pdpBtnWish" onclick="togglePdpFavorite()">♡</button>
+      </div>
+      <div class="pdp-desc-block">
+        <div class="pdp-section-label" style="margin-bottom:.75rem">Description</div>
+        <div class="pdp-desc-text" id="pdpDescEl"></div>
+      </div>
+      <div class="pdp-delivery">
+        <div class="pdp-delivery-row">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M5 8h14M5 8a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2M5 8V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2"/></svg>
+          Livraison gratuite dès 50€ — expédié sous 24h
+        </div>
+        <div class="pdp-delivery-row">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M9 14l-4-4 4-4M5 10h11a4 4 0 0 1 0 8h-1"/></svg>
+          Retours gratuits sous 30 jours
+        </div>
+        <div class="pdp-delivery-row">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Paiement 100% sécurisé
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CATEGORY PAGE ── -->
+<div id="categoryView">
+  <div class="cat-header-bar">
+    <button class="cat-back" onclick="closeCategoryView()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Retour
+    </button>
+    <span class="cat-title-bar" id="catTitle"></span>
+    <span class="cat-count-bar" id="catCount"></span>
+  </div>
+  <div class="cat-page-grid">
+    <div class="cat-products" id="catProducts"></div>
+  </div>
+</div>
+
+<!-- ── LIGHTBOX ── -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
+  <img id="lightboxImg" src="" alt="">
 </div>
 
 <div class="toast" id="toast"></div>
 
 <footer>
-  <div>© 2025 APEX Sport & Tech</div>
+  <div>&copy; 2026 APEX Sport & Tech</div>
   <div>Livraison gratuite dès 50€ · Retours 30 jours · Paiement sécurisé</div>
 </footer>
 
@@ -328,20 +538,86 @@
 const API = 'http://localhost:8000';
 
 const DEMO = [
-  {id:1,name:"Montre connectée ProFit X3",category:"tracking",emoji:"⌚",price:89.99,original_price:null,stock:15,badge:"new"},
-  {id:2,name:"Écouteurs Sport TWS Pro",category:"audio",emoji:"🎧",price:59.99,original_price:79.99,stock:8,badge:"sale"},
-  {id:3,name:"Ceinture cardio Bluetooth",category:"tracking",emoji:"💓",price:44.99,original_price:null,stock:22,badge:null},
-  {id:4,name:"Bouteille connectée HydroSmart",category:"sport",emoji:"🍶",price:34.99,original_price:null,stock:3,badge:"hot"},
-  {id:5,name:"Bandes élastiques Smart Set",category:"sport",emoji:"🏋️",price:27.99,original_price:null,stock:50,badge:null},
-  {id:6,name:"Balance intelligente BodyComp",category:"tech",emoji:"⚖️",price:69.99,original_price:89.99,stock:11,badge:"sale"},
-  {id:7,name:"Tapis de yoga connecté",category:"sport",emoji:"🧘",price:119.99,original_price:null,stock:6,badge:"new"},
-  {id:8,name:"Lampe récup LED Therapy",category:"tech",emoji:"💡",price:79.99,original_price:null,stock:9,badge:null},
+  {id:9,name:"Veste Running AeroFit Pro",category:"vetements",image:"Images/vetements/veste noire/veste-aerofit-pro.png",price:29.99,original_price:null,stock:10,badge:"new",description:"Veste de sport légère et respirante, conçue pour les athlètes en mouvement. Séchage rapide, panneaux en maille ventilés et bandes réfléchissantes pour une visibilité optimale. Fermeture éclair intégrale. Idéale pour la course, le fitness et les activités outdoor. Coloris Noir — Collection Printemps/Été."},
+  {id:10,name:"Short Sport DryRun Pro",category:"vetements",image:"Images/vetements/short poche/short-noir-1.png",price:24.99,original_price:null,stock:18,badge:"new",description:"Short de sport outdoor pour hommes, séchage rapide, tissu respirant avec doublure compression intégrée. Poche latérale zippée pour smartphone. Convient pour la course, le fitness et les activités outdoor. Coupe ergonomique — Collection Printemps/Été.",
+    colors:[
+      {name:"Noir",  hex:"#1a1a1a",images:["Images/vetements/short poche/short-noir-1.png","Images/vetements/short poche/short-noir-2.png"]},
+      {name:"Bleu",  hex:"#1a8a8a",images:["Images/vetements/short poche/short-bleu-1.png","Images/vetements/short poche/short-bleu-2.png"]},
+      {name:"Gris",  hex:"#7a7a7a",images:["Images/vetements/short poche/short-gris-1.png","Images/vetements/short poche/short-gris-2.png"]}
+    ]
+  },
+  {id:11,name:"Gilet Coupe-Vent StormShield",category:"vetements",image:"Images/vetements/gilet under/gilet-noir-1.png",price:49.99,original_price:59.99,stock:14,badge:"sale",description:"Gilet à capuche coupe-vent imperméable, tissu technique léger et stretch. Fermeture éclair intégrale avec poche poitrine zippée. Capuche ajustable et poignets élastiques. Idéal pour la course, la randonnée et les entraînements outdoor par tous les temps. Respirant et séchage rapide — Collection Printemps/Été.",
+    colors:[
+      {name:"Noir",  hex:"#1a1a1a",images:["Images/vetements/gilet under/gilet-noir-1.png","Images/vetements/gilet under/gilet-noir-2.png"]},
+      {name:"Bleu",  hex:"#5a8a8a",images:["Images/vetements/gilet under/gilet-bleu-1.png","Images/vetements/gilet under/gilet-bleu-2.png"]},
+      {name:"Gris",  hex:"#aaaaaa",images:["Images/vetements/gilet under/gilet-gris-1.png","Images/vetements/gilet under/gilet-gris-2.png"]},
+      {name:"Kaki",  hex:"#4a5a2a",images:["Images/vetements/gilet under/gilet-kaki-1.png","Images/vetements/gilet under/gilet-kaki-2.png"]}
+    ]
+  },
+  {id:12,name:"Montre Connectée PulseTrack S2",category:"tracking",image:"Images/tech/montre connecté/montre-noir.png",price:79.99,original_price:null,stock:20,badge:"hot",description:"Montre connectée avec écran tactile HD couleur 1.85 pouces. Compteur de pas, distance parcourue et calories brûlées en temps réel. Suivi du rythme cardiaque 24h/24, monitoring du sommeil et mesure de la SpO2. Plus de 100 modes sportifs, notifications smartphone, contrôle de la musique et météo. Étanche IP68 — Autonomie jusqu'à 7 jours.",
+    colors:[
+      {name:"Noir",  hex:"#1a1a1a",images:["Images/tech/montre connecté/montre-noir.png"]},
+      {name:"Beige", hex:"#d4c5a0",images:["Images/tech/montre connecté/montre-beige.png"]},
+      {name:"Gris",  hex:"#9a9a9a",images:["Images/tech/montre connecté/montre-gris.png"]},
+      {name:"Rose",  hex:"#e8a0b0",images:["Images/tech/montre connecté/montre-rose.png"]}
+    ]
+  },
+  {id:13,name:"Push-Up Support ProGrip",category:"sport",image:"Images/sport/Pompe support/Capture d'écran 2026-03-24 181722.png",price:19.99,original_price:null,stock:35,badge:"new",description:"Supports de pompes ergonomiques avec poignées antidérapantes. Renforcent les pectoraux, triceps et épaules en profondeur. Design stable avec base large pour un appui sécurisé. Mousse haute densité pour un confort optimal. Légers et transportables — parfaits pour l'entraînement à domicile ou en salle.",
+    images:["Images/sport/Pompe support/Capture d'écran 2026-03-24 181722.png","Images/sport/Pompe support/Capture d'écran 2026-03-24 181733.png","Images/sport/Pompe support/Capture d'écran 2026-03-24 181755.png"]
+  },
+  {id:14,name:"Grip Force Trainer Pro",category:"sport",image:"Images/sport/grippe force/Capture d'écran 2026-03-24 182004.png",price:14.99,original_price:null,stock:40,badge:null,description:"Pince de musculation pour renforcer la poigne et les avant-bras. Résistance ajustable de 10 à 60 kg. Construction en acier inoxydable avec poignées ergonomiques en silicone. Compact et portable, idéal pour l'entraînement au bureau ou en déplacement. Améliore la force de préhension pour l'escalade, le tennis et la musculation.",
+    images:["Images/sport/grippe force/Capture d'écran 2026-03-24 182004.png","Images/sport/grippe force/Capture d'écran 2026-03-24 182016.png","Images/sport/grippe force/Capture d'écran 2026-03-24 182025.png","Images/sport/grippe force/Capture d'écran 2026-03-24 182039.png","Images/sport/grippe force/Capture d'écran 2026-03-24 182045.png"]
+  },
+  {id:15,name:"Haltères Ajustables PowerSet",category:"sport",image:"Images/sport/poids/Capture d'écran 2026-03-24 181904.png",price:39.99,original_price:49.99,stock:12,badge:"sale",description:"Paire d'haltères ajustables avec disques interchangeables. Poids réglable de 2 à 10 kg par haltère. Revêtement en caoutchouc antidérapant pour une prise sûre. Barre chromée avec moletage pour un grip optimal. Parfaits pour le home gym — musculation, fitness et rééducation.",
+    images:["Images/sport/poids/Capture d'écran 2026-03-24 181904.png","Images/sport/poids/Capture d'écran 2026-03-24 181910.png"]
+  },
+  {id:16,name:"Casque Sans Fil Sony UltraBass",category:"audio",image:"Images/tech/casque sony/Capture d'écran 2026-03-24 181044.png",price:149.99,original_price:199.99,stock:7,badge:"sale",description:"Casque audio sans fil avec réduction de bruit active. Son Hi-Res certifié avec basses profondes et médiums cristallins. Autonomie 30 heures, charge rapide USB-C. Arceau ajustable avec coussinets mémoire de forme ultra-confortables. Bluetooth 5.3 multipoint, micro intégré pour les appels. Pliable et transportable avec étui inclus.",
+    images:["Images/tech/casque sony/Capture d'écran 2026-03-24 181044.png","Images/tech/casque sony/Capture d'écran 2026-03-24 181059.png"]
+  },
+  {id:17,name:"Écouteurs Sony AirPulse TWS",category:"audio",image:"Images/tech/ecouteur sony/Capture d'écran 2026-03-24 181217.png",price:89.99,original_price:119.99,stock:15,badge:"hot",description:"Écouteurs true wireless avec réduction de bruit adaptative. Pilotes 12mm pour un son immersif et détaillé. Autonomie 8h + 24h avec le boîtier de charge. Résistance IPX4 à l'eau et à la transpiration. Bluetooth 5.3, codec LDAC haute résolution. Commandes tactiles personnalisables et assistant vocal intégré.",
+    images:["Images/tech/ecouteur sony/Capture d'écran 2026-03-24 181217.png","Images/tech/ecouteur sony/Capture d'écran 2026-03-24 181229.png"]
+  },
+  {id:18,name:"Jogging California Streetwear",category:"vetements",image:"Images/vetements/jogging california/Capture d'écran 2026-03-24 181611.png",price:34.99,original_price:null,stock:25,badge:"new",description:"Pantalon de jogging coupe droite, style streetwear californien. Tissu coton-polyester stretch ultra-confortable. Taille élastique avec cordon de serrage ajustable. Poches latérales profondes et poche arrière zippée. Finitions côtelées aux chevilles. Idéal pour le sport, les loisirs et le quotidien — Collection Printemps/Été.",
+    images:["Images/vetements/jogging california/Capture d'écran 2026-03-24 181611.png","Images/vetements/jogging california/Capture d'écran 2026-03-24 181617.png","Images/vetements/jogging california/Capture d'écran 2026-03-24 181623.png","Images/vetements/jogging california/Capture d'écran 2026-03-24 181635.png"]
+  },
+  {id:19,name:"Rouleau Massage FoamRelax Pro",category:"tracking",image:"Images/accessoire/rouleau yoga/image.png",price:22.99,original_price:null,stock:30,badge:"new",description:"Rouleau de massage à relief profond pour la récupération musculaire et le relâchement myofascial. Surface texturée à picots pour un massage ciblé des points de tension. Mousse EVA haute densité, légère et résistante. Idéal pour l'échauffement, la récupération après l'entraînement et le yoga. Compact et transportable — 33 cm.",
+    images:["Images/accessoire/rouleau yoga/image.png","Images/accessoire/rouleau yoga/image2.png","Images/accessoire/rouleau yoga/S6790f28aa2be465d8beb42dbf2e9f740U.jpg_220x220q75.jpg_.png"]
+  },
+  {id:20,name:"Gants MMA StormLight Semi-Pro",category:"sport",image:"Images/sport/gants/Capture d'écran 2026-03-24 203419.png",price:34.99,original_price:null,stock:20,badge:null,description:"Gants de MMA semi-pro avec protection renforcée des articulations. Cuir synthétique haute résistance, rembourrage multi-couches pour absorber les impacts. Fermeture velcro ajustable au poignet pour un maintien optimal. Paume ouverte pour les saisies et le grappling. Convient pour le MMA, le sparring et l'entraînement au sac de frappe.",
+    images:["Images/sport/gants/Capture d'écran 2026-03-24 203419.png","Images/sport/gants/Capture d'écran 2026-03-24 203429.png","Images/sport/gants/Capture d'écran 2026-03-24 203436.png","Images/sport/gants/Capture d'écran 2026-03-24 203444.png"]
+  },
+  {id:21,name:"Gants de Boxe IronFist Pro",category:"sport",image:"Images/sport/gants 2/Capture d'écran 2026-03-24 203601.png",price:29.99,original_price:39.99,stock:16,badge:"sale",description:"Gants de boxe professionnels en cuir PU premium. Rembourrage mousse haute densité pour une absorption maximale des chocs. Doublure intérieure respirante anti-transpiration. Fermeture velcro large pour un ajustement sécurisé. Disponibles en 10 oz et 12 oz. Idéaux pour la boxe, le kickboxing et le cardio boxing.",
+    images:["Images/sport/gants 2/Capture d'écran 2026-03-24 203601.png","Images/sport/gants 2/Capture d'écran 2026-03-24 203606.png","Images/sport/gants 2/Capture d'écran 2026-03-24 203612.png","Images/sport/gants 2/Capture d'écran 2026-03-24 203618.png"]
+  },
+  {id:22,name:"Push-Up Bars Bois Naturel",category:"sport",image:"Images/sport/pompe bois/image.png",price:24.99,original_price:null,stock:22,badge:"hot",description:"Barres de pompes en bois de hêtre massif, finition naturelle. Design ergonomique incliné pour un alignement optimal du poignet et une amplitude de mouvement accrue. Base antidérapante pour une stabilité parfaite. Renforcent pectoraux, triceps, épaules et core. Esthétiques et durables — fabriquées pour durer.",
+    images:["Images/sport/pompe bois/image.png","Images/sport/pompe bois/S9e9e7a4807d74180a1b316cc56fe926cM.png","Images/sport/pompe bois/S52948ba170c64360ab6c6fae8fe717c8x.jpg_220x220q75.jpg_.png"]
+  },
+  {id:23,name:"Protège-Tibias Combat ShieldPro",category:"sport",image:"Images/sport/protege tibia/Capture d'écran 2026-03-24 203648.png",price:27.99,original_price:null,stock:18,badge:null,description:"Protège-tibias intégraux avec protection du cou-de-pied. Coque en mousse EVA haute densité pour absorber les impacts. Intérieur en tissu mesh respirant et anti-odeur. Sangles élastiques réglables pour un maintien optimal. Conçus pour le Muay Thai, le kickboxing et le MMA. Design anatomique épousant la forme de la jambe.",
+    images:["Images/sport/protege tibia/Capture d'écran 2026-03-24 203648.png","Images/sport/protege tibia/Capture d'écran 2026-03-24 203652.png","Images/sport/protege tibia/Capture d'écran 2026-03-24 203658.png","Images/sport/protege tibia/Capture d'écran 2026-03-24 203706.png","Images/sport/protege tibia/Capture d'écran 2026-03-24 203711.png"]
+  },
+  {id:24,name:"Pistolet Massage DeepPulse X6",category:"tech",image:"Images/tech/pisto massage/image.png",price:59.99,original_price:79.99,stock:10,badge:"sale",description:"Pistolet de massage à percussion profonde avec écran LCD tactile. 6 têtes interchangeables pour cibler tous les groupes musculaires. 30 niveaux d'intensité, moteur brushless ultra-silencieux. Autonomie 6 heures avec batterie rechargeable USB-C. Soulage les tensions, accélère la récupération et améliore la circulation sanguine. Livré avec mallette de transport.",
+    images:["Images/tech/pisto massage/image.png","Images/tech/pisto massage/Capture d'écran 2026-03-24 203208.png","Images/tech/pisto massage/Capture d'écran 2026-03-24 203234.png"]
+  },
+  {id:25,name:"Shaker ProStack 3-en-1",category:"tracking",image:"Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212514.png",price:12.99,original_price:null,stock:45,badge:"hot",description:"Shaker protéiné 3-en-1 avec compartiments empilables. Capacité 600 ml avec boule mélangeuse en inox pour un mélange sans grumeaux. Compartiment à poudre et compartiment à pilules/compléments intégrés. Plastique Tritan sans BPA, étanche et résistant. Graduation de mesure en ml et oz. Passe au lave-vaisselle — indispensable pour la salle.",
+    images:["Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212514.png","Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212532.png","Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212542.png","Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212549.png","Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212601.png"]
+  },
+  {id:26,name:"Punching Ball Reflex Trainer",category:"sport",image:"Images/sport/boxe punch/Capture d'écran 2026-03-24 212019.png",price:44.99,original_price:null,stock:8,badge:"new",description:"Punching-ball sur pied avec barre de réaction flexible. Hauteur réglable de 120 à 180 cm pour s'adapter à toutes les tailles. Base ventouse ultra-stable sans perçage. Balle en PU souple pour un rebond rapide et réaliste. Améliore les réflexes, la coordination et la vitesse de frappe. Idéal pour la boxe, le MMA et le cardio à domicile.",
+    images:["Images/sport/boxe punch/Capture d'écran 2026-03-24 212019.png","Images/sport/boxe punch/Capture d'écran 2026-03-24 212100.png"]
+  },
+  {id:27,name:"Enceinte Bluetooth ZealBass Mini",category:"audio",image:"Images/tech/enceinte/Capture d'écran 2026-03-24 212354.png",price:39.99,original_price:null,stock:20,badge:"new",description:"Enceinte Bluetooth portable compacte avec son stéréo 360°. Basses profondes grâce au radiateur passif intégré. Bluetooth 5.3 avec portée 15 mètres. Étanche IPX6, résiste aux éclaboussures et à la pluie. Autonomie 12 heures. Entrée AUX et carte micro-SD. LED d'ambiance RGB. Format poche — parfaite pour le sport, la plage et les sorties.",
+    images:["Images/tech/enceinte/Capture d'écran 2026-03-24 212354.png","Images/tech/enceinte/Capture d'écran 2026-03-24 212423.png"]
+  },
+  {id:28,name:"Tapis de Marche Pliable WalkPad",category:"tech",image:"Images/tech/tapis course/Capture d'écran 2026-03-24 212221.png",price:189.99,original_price:249.99,stock:5,badge:"sale",description:"Tapis de marche et course 2-en-1 ultra-plat avec télécommande. Vitesse réglable de 1 à 8 km/h. Écran LED intégré affichant vitesse, distance, calories et temps. Moteur silencieux pour une utilisation à domicile ou au bureau. Se range sous un lit ou un bureau grâce à son profil de 7 cm. Surface de course antidérapante 120×42 cm. Poids max 100 kg.",
+    images:["Images/tech/tapis course/Capture d'écran 2026-03-24 212221.png","Images/tech/tapis course/Capture d'écran 2026-03-24 212229.png","Images/tech/tapis course/Capture d'écran 2026-03-24 212244.png","Images/tech/tapis course/Capture d'écran 2026-03-24 212254.png"]
+  },
 ];
 
 // ── STATE ───────────────────────────────────────────────────────
-let allProducts=[], cart=[], currentFilter='all', currentSort='default', apiOnline=false;
+let allProducts=[], cart=[], apiOnline=false, searchQuery='';
+const SECTION_PREVIEW = 4;
 let currentUser = JSON.parse(localStorage.getItem('apex_user')||'null');
 let authToken   = localStorage.getItem('apex_token')||null;
+let favorites = JSON.parse(localStorage.getItem('apex_favorites')||'[]');
 
 // ── API ─────────────────────────────────────────────────────────
 async function apiFetch(path, opts={}) {
@@ -356,17 +632,25 @@ async function apiFetch(path, opts={}) {
 async function init() {
   updateAuthUI();
   updateCart();
+  updateFavBadge();
   try {
     const data = await apiFetch('/products');
-    allProducts = data; apiOnline = true;
-    setBanner('online', `✓ API connectée — ${data.length} produits depuis la base de données`);
-    document.getElementById('statProducts').textContent = data.length+'+';
+    apiOnline = true;
+    if (data.length > 0) {
+      allProducts = data;
+      setBanner('online', `✓ API connectée — ${data.length} produits depuis la base de données`);
+      document.getElementById('statProducts').textContent = data.length+'+';
+    } else {
+      allProducts = DEMO;
+      setBanner('online', `✓ API connectée — base vide, données de démo affichées`);
+      document.getElementById('statProducts').textContent = DEMO.length+'+';
+    }
   } catch(e) {
     allProducts = DEMO; apiOnline = false;
     setBanner('offline', '⚠ API hors ligne — données de démo affichées. Lancez : uvicorn main:app --reload');
-    document.getElementById('statProducts').textContent = '200+';
+    document.getElementById('statProducts').textContent = DEMO.length+'+';
   }
-  renderProducts();
+  renderSections();
 }
 
 function setBanner(type, msg) {
@@ -375,32 +659,116 @@ function setBanner(type, msg) {
   document.getElementById('apiBannerText').textContent = msg;
 }
 
-// ── PRODUITS ────────────────────────────────────────────────────
-function getFiltered() {
-  let list = currentFilter==='all' ? [...allProducts] : allProducts.filter(p=>p.category===currentFilter);
-  if (currentSort==='price-asc')  list.sort((a,b)=>a.price-b.price);
-  if (currentSort==='price-desc') list.sort((a,b)=>b.price-a.price);
-  return list;
+// ── SECTIONS ───────────────────────────────────────────────────
+const SECTIONS = [
+  {id:'section-nouveautes', title:'Nouveautés',    filter: p => p.badge==='new'},
+  {id:'section-topventes',  title:'Top ventes',    filter: p => p.badge==='hot'},
+  {id:'section-vetements',  title:'Vêtements',     filter: p => p.category==='vetements'},
+  {id:'section-sport',      title:'Sport',          filter: p => p.category==='sport'},
+  {id:'section-accessoires',title:'Accessoires',    filter: p => p.category==='tracking'||p.category==='audio'},
+  {id:'section-tech',       title:'Tech',           filter: p => p.category==='tech'},
+  {id:'section-promos',     title:'Promos',         filter: p => p.original_price!=null},
+];
+
+function renderSections() {
+  const container = document.getElementById('catalogSections');
+  const banner = document.getElementById('apiBanner');
+  container.innerHTML = '';
+  container.appendChild(banner);
+
+  let list = [...allProducts];
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(p => p.name.toLowerCase().includes(q) || (p.category && p.category.toLowerCase().includes(q)));
+  }
+
+  const catLabelsMap = {sport:'Sport',tech:'Tech',audio:'Audio',tracking:'Tracking',vetements:'Vêtements'};
+  const badges = {new:'Nouveau',sale:'Promo',hot:'Populaire'};
+
+  SECTIONS.forEach(sec => {
+    const items = list.filter(sec.filter);
+    if (!items.length) return;
+    const shown = items.slice(0, SECTION_PREVIEW);
+
+    const section = document.createElement('section');
+    section.className = 'catalog-section';
+    section.id = sec.id;
+    section.innerHTML = `
+      <div class="section-header">
+        <h2 class="section-title">${sec.title}</h2>
+        <span class="section-count">${items.length} produit${items.length>1?'s':''}</span>
+      </div>
+      <div class="section-grid">
+        ${shown.map((p,i)=>`
+          <div class="product-card" style="animation-delay:${i*.05}s" onclick="openPdp(${p.id})">
+            ${p.badge?`<span class="badge badge-${p.badge}">${badges[p.badge]}</span>`:''}
+            <div class="product-img-wrap">
+              ${p.image ? `<img class="product-img" src="${p.image}" alt="${p.name}">` : `<div class="product-emoji">${p.emoji||'📦'}</div>`}
+              <div class="card-actions">
+                <button class="btn-add" onclick="event.stopPropagation();addToCart(${p.id})">+ Ajouter</button>
+                <button class="btn-wish${favorites.includes(p.id)?' favorited':''}" onclick="event.stopPropagation();toggleFavorite(${p.id},this)">${favorites.includes(p.id)?'♥':'♡'}</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="product-category">${catLabelsMap[p.category]||p.category}</div>
+              <div class="product-name">${p.name}</div>
+              <div class="product-price">
+                ${p.price.toFixed(2).replace('.',',')} €
+                ${p.original_price?`<span class="original">${p.original_price.toFixed(2).replace('.',',')} €</span>`:''}
+              </div>
+              <div class="product-stock ${p.stock<=5?'low':''}">${p.stock<=5?`⚡ Plus que ${p.stock} en stock`:`En stock (${p.stock})`}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      ${items.length > SECTION_PREVIEW ? `
+        <div class="section-see-more">
+          <button class="btn-see-more" onclick="openCategoryPage(event,null,'${sec.id}')">Voir tout (${items.length})</button>
+        </div>` : ''}
+    `;
+    container.appendChild(section);
+  });
+
+  if (!container.querySelector('.catalog-section')) {
+    const empty = document.createElement('div');
+    empty.className = 'grid-loader';
+    empty.style.padding = '5rem';
+    empty.textContent = 'Aucun produit trouvé';
+    container.appendChild(empty);
+  }
 }
 
-function renderProducts() {
-  const grid = document.getElementById('productsGrid');
-  const list = getFiltered();
-  document.getElementById('catalogCount').textContent = `${list.length} produit${list.length>1?'s':''}`;
-  if (!list.length) { grid.innerHTML=`<div class="grid-loader">Aucun produit</div>`; return; }
+function searchProducts(val) { searchQuery=val.trim(); renderSections(); }
+
+// ── CATEGORY PAGE ──────────────────────────────────────────────
+function openCategoryPage(e, link, sectionId) {
+  if(e) e.preventDefault();
+  if(document.getElementById('pdpView').style.display==='block') closePdp();
+
+  // Update nav active state
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  if(link) link.classList.add('active');
+
+  const sec = SECTIONS.find(s=>s.id===sectionId);
+  if(!sec) return;
+
+  const items = allProducts.filter(sec.filter);
+  const catLabelsMap = {sport:'Sport',tech:'Tech',audio:'Audio',tracking:'Tracking',vetements:'Vêtements'};
   const badges = {new:'Nouveau',sale:'Promo',hot:'Populaire'};
-  grid.innerHTML = list.map((p,i)=>`
-    <div class="product-card" style="animation-delay:${i*.05}s">
+
+  document.getElementById('catTitle').textContent = sec.title;
+  document.getElementById('catCount').textContent = `${items.length} produit${items.length>1?'s':''}`;
+  document.getElementById('catProducts').innerHTML = items.map((p,i)=>`
+    <div class="product-card" style="animation-delay:${i*.05}s" onclick="openPdp(${p.id})">
       ${p.badge?`<span class="badge badge-${p.badge}">${badges[p.badge]}</span>`:''}
       <div class="product-img-wrap">
-        <div class="product-emoji">${p.emoji||'📦'}</div>
+        ${p.image ? `<img class="product-img" src="${p.image}" alt="${p.name}">` : `<div class="product-emoji">${p.emoji||'📦'}</div>`}
         <div class="card-actions">
-          <button class="btn-add" onclick="addToCart(${p.id})">+ Ajouter</button>
-          <button class="btn-wish">♡</button>
+          <button class="btn-add" onclick="event.stopPropagation();addToCart(${p.id})">+ Ajouter</button>
+          <button class="btn-wish${favorites.includes(p.id)?' favorited':''}" onclick="event.stopPropagation();toggleFavorite(${p.id},this)">${favorites.includes(p.id)?'♥':'♡'}</button>
         </div>
       </div>
       <div class="card-body">
-        <div class="product-category">${{sport:'Sport',tech:'Tech',audio:'Audio',tracking:'Tracking'}[p.category]||p.category}</div>
+        <div class="product-category">${catLabelsMap[p.category]||p.category}</div>
         <div class="product-name">${p.name}</div>
         <div class="product-price">
           ${p.price.toFixed(2).replace('.',',')} €
@@ -409,16 +777,57 @@ function renderProducts() {
         <div class="product-stock ${p.stock<=5?'low':''}">${p.stock<=5?`⚡ Plus que ${p.stock} en stock`:`En stock (${p.stock})`}</div>
       </div>
     </div>`).join('');
+
+  window.scrollTo(0,0);
+  document.getElementById('catalogView').style.display = 'none';
+  document.getElementById('categoryView').style.display = 'block';
 }
 
-function filterProducts(cat,btn) {
-  currentFilter=cat;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderProducts();
+function closeCategoryView() {
+  document.getElementById('categoryView').style.display = 'none';
+  document.getElementById('catalogView').style.display = 'block';
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  window.scrollTo(0,0);
 }
 
-function sortProducts(val) { currentSort=val; renderProducts(); }
+// ── FAVORIS ────────────────────────────────────────────────────
+function toggleFavorite(id, btn) {
+  if (!currentUser) {
+    showToast('Connectez-vous pour ajouter aux favoris', true);
+    openModal('authModal');
+    return;
+  }
+  const idx = favorites.indexOf(id);
+  if (idx > -1) {
+    favorites.splice(idx, 1);
+    if(btn){ btn.classList.remove('favorited'); btn.textContent='♡'; }
+    showToast('Retiré des favoris');
+  } else {
+    favorites.push(id);
+    if(btn){ btn.classList.add('favorited'); btn.textContent='♥'; }
+    const p = allProducts.find(p=>p.id===id);
+    showToast(`${p?.emoji||'♥'} ${p?.name||'Produit'} ajouté aux favoris !`);
+  }
+  localStorage.setItem('apex_favorites', JSON.stringify(favorites));
+  updateFavBadge();
+}
+
+function updateFavBadge() {
+  const btn = document.getElementById('favBtn');
+  const count = favorites.length;
+  let badge = btn.querySelector('.fav-badge');
+  if (count > 0) {
+    if (!badge) {
+      badge = document.createElement('span');
+      badge.className = 'cart-badge fav-badge';
+      btn.appendChild(badge);
+    }
+    badge.textContent = count;
+    badge.style.display = 'flex';
+  } else if (badge) {
+    badge.style.display = 'none';
+  }
+}
 
 // ── PANIER ──────────────────────────────────────────────────────
 function addToCart(id) {
@@ -440,7 +849,9 @@ function changeQty(id,d) {
 function updateCart() {
   const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const count=cart.reduce((s,i)=>s+i.qty,0);
-  document.getElementById('cartCount').textContent=count;
+  const badge=document.getElementById('cartCount');
+  badge.textContent=count;
+  badge.style.display=count>0?'flex':'none';
   document.getElementById('cartTotal').textContent=fmt(total);
   document.getElementById('checkoutBtn').disabled=cart.length===0;
   const c=document.getElementById('cartItems');
@@ -470,15 +881,15 @@ function handleAuthClick() {
 function logout() {
   currentUser=null; authToken=null;
   localStorage.removeItem('apex_user'); localStorage.removeItem('apex_token');
-  updateAuthUI(); showToast('👋 Déconnecté');
+  updateAuthUI(); showToast('Déconnecté');
 }
 
 function updateAuthUI() {
   const btn=document.getElementById('authBtn');
+  const dot=document.getElementById('authDot');
   const logged=!!currentUser;
-  btn.classList.toggle('logged',logged);
-  document.getElementById('authBtnIcon').textContent=logged?'✅':'👤';
-  document.getElementById('authBtnLabel').textContent=logged?currentUser.full_name.split(' ')[0]:'Connexion';
+  btn.classList.toggle('active-user',logged);
+  dot.classList.toggle('visible',logged);
 }
 
 async function login() {
@@ -498,9 +909,9 @@ async function login() {
     localStorage.setItem('apex_token',authToken);
     localStorage.setItem('apex_user',JSON.stringify(currentUser));
     updateAuthUI(); closeModal('authModal');
-    showToast(`🎉 Bienvenue ${currentUser.full_name} !`);
+    showToast(`Bienvenue ${currentUser.full_name} !`);
   } catch(e){ showErr(err,e.message||'Erreur de connexion'); }
-  finally{ btn.disabled=false; btn.textContent='Se connecter →'; }
+  finally{ btn.disabled=false; btn.textContent='Se connecter'; }
 }
 
 async function register() {
@@ -515,17 +926,17 @@ async function register() {
   btn.disabled=true; btn.textContent='Création…';
   try {
     await apiFetch('/auth/register',{method:'POST',body:JSON.stringify({full_name:name,email,password:pw})});
-    showToast('✅ Compte créé ! Email de bienvenue envoyé.');
+    showToast('Compte créé ! Email de bienvenue envoyé.');
     document.getElementById('loginEmail').value=email;
     document.getElementById('loginPassword').value=pw;
     switchTab('login'); await login();
   } catch(e){ showErr(err,e.message||'Erreur de création'); }
-  finally{ btn.disabled=false; btn.textContent='Créer mon compte →'; }
+  finally{ btn.disabled=false; btn.textContent='Créer mon compte'; }
 }
 
 // ── COMMANDE ────────────────────────────────────────────────────
 function checkout() {
-  if(!currentUser){ showToast('👤 Connectez-vous pour commander',true); openModal('authModal'); return; }
+  if(!currentUser){ showToast('Connectez-vous pour commander',true); openModal('authModal'); return; }
   toggleCart();
   const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
   document.getElementById('checkoutSummary').innerHTML=cart.map(i=>
@@ -545,17 +956,237 @@ async function confirmOrder() {
   try {
     const order=await apiFetch('/orders',{method:'POST',body:JSON.stringify({address,items:cart.map(i=>({product_id:i.id,quantity:i.qty}))})});
     cart=[]; updateCart(); closeModal('checkoutModal');
-    showToast(`🎉 Commande #${order.id} confirmée ! Email envoyé.`);
+    showToast(`Commande #${order.id} confirmée !`);
   } catch(e) {
     if(!apiOnline){
       cart=[]; updateCart(); closeModal('checkoutModal');
-      showToast('🎉 Commande simulée avec succès !');
+      showToast('Commande simulée avec succès !');
     } else { showErr(err,e.message||'Erreur commande'); }
   }
-  finally{ btn.disabled=false; btn.textContent='✅ Confirmer la commande →'; }
+  finally{ btn.disabled=false; btn.textContent='Confirmer la commande'; }
 }
 
 // ── HELPERS ─────────────────────────────────────────────────────
+// ── PAGE PRODUIT ────────────────────────────────────────────────
+const catLabels = {sport:'Sport',tech:'Tech',audio:'Audio',tracking:'Tracking',vetements:'Vêtements'};
+const badgeLabels = {new:'Nouveau',sale:'Promo',hot:'Populaire'};
+const sizesByCategory = {
+  vetements:['XS','S','M','L','XL','XXL'],
+  sport:['XS','S','M','L','XL'],
+};
+
+let currentPdpProduct = null;
+let pdpCameFromCategory = false;
+
+function openPdp(id) {
+  const p = allProducts.find(p=>p.id===id); if(!p) return;
+  currentPdpProduct = p;
+  pdpCameFromCategory = document.getElementById('categoryView').style.display==='block';
+
+  // Breadcrumb
+  document.getElementById('pdpBreadCat').textContent = catLabels[p.category]||p.category;
+  document.getElementById('pdpBreadName').textContent = p.name;
+
+  // Infos
+  document.getElementById('pdpCat').textContent = catLabels[p.category]||p.category;
+  document.getElementById('pdpNameEl').textContent = p.name;
+  document.getElementById('pdpPriceEl').textContent = fmt(p.price);
+  document.getElementById('pdpPriceOrig').textContent = p.original_price ? fmt(p.original_price) : '';
+  const stockEl = document.getElementById('pdpStockEl');
+  stockEl.className = 'pdp-stock-info' + (p.stock<=5?' low':'');
+  stockEl.textContent = p.stock<=5 ? `⚡ Plus que ${p.stock} en stock` : `✓ En stock (${p.stock} disponibles)`;
+  document.getElementById('pdpBadgeEl').innerHTML = p.badge
+    ? `<span class="pdp-badge-inline badge-${p.badge}">${badgeLabels[p.badge]}</span>` : '';
+  document.getElementById('pdpDescEl').textContent = p.description || 'Aucune description disponible.';
+
+  // Couleurs
+  const colorsBlock = document.getElementById('pdpColorsBlock');
+  if (p.colors && p.colors.length > 0) {
+    document.getElementById('pdpColorName').textContent = p.colors[0].name;
+    document.getElementById('pdpColors').innerHTML = p.colors.map((c,i)=>
+      `<div class="color-swatch${i===0?' active':''}" style="background:${c.hex}" title="${c.name}" onclick="selectColor(${i})"></div>`
+    ).join('');
+    colorsBlock.style.display = 'block';
+  } else {
+    colorsBlock.style.display = 'none';
+  }
+
+  // Tailles
+  const sizes = sizesByCategory[p.category];
+  const sizesBlock = document.getElementById('pdpSizesBlock');
+  if (sizes) {
+    document.getElementById('pdpSizes').innerHTML = sizes.map((s,i)=>
+      `<button class="size-btn${i===0?' active':''}" onclick="selectSize(this)">${s}</button>`
+    ).join('');
+    sizesBlock.style.display = 'block';
+  } else {
+    sizesBlock.style.display = 'none';
+  }
+
+  // Galerie
+  setupGallery(p, 0);
+
+  // Bouton panier
+  document.getElementById('pdpBtnAdd').onclick = () => { addToCart(p.id); showToast(`${p.emoji||'✓'} ${p.name} ajouté !`); };
+
+  // Bouton favori PDP
+  const wishBtn = document.getElementById('pdpBtnWish');
+  const isFav = favorites.includes(p.id);
+  wishBtn.classList.toggle('favorited', isFav);
+  wishBtn.textContent = isFav ? '♥' : '♡';
+
+  // Afficher la page produit, masquer le reste
+  window.scrollTo(0,0);
+  document.getElementById('catalogView').style.display = 'none';
+  document.getElementById('categoryView').style.display = 'none';
+  document.getElementById('pdpView').style.display = 'block';
+}
+
+function setupGallery(p, colorIndex) {
+  const gallery = document.getElementById('pdpGallery');
+
+  let images = [];
+  if (p.colors && p.colors.length > 0) {
+    images = p.colors[colorIndex].images;
+  } else if (p.images) {
+    images = p.images;
+  } else if (p.image) {
+    images = [p.image];
+  }
+
+  if (images.length > 1) {
+    gallery.innerHTML = `
+      <div class="pdp-gallery-with-thumbs">
+        <div class="pdp-thumbs-vertical" id="pdpThumbsV">
+          ${images.map((src,i)=>`
+            <div class="pdp-thumb${i===0?' active':''}" onmouseenter="pdpHoverThumb('${src}',this)" onclick="openLightbox('${src}')">
+              <img src="${src}" alt=""></div>`).join('')}
+        </div>
+        <div class="pdp-gallery-main" id="pdpGalleryMain">
+          <img src="${images[0]}" alt="${p.name}" onclick="openLightbox(this.src)">
+        </div>
+      </div>`;
+  } else if (images.length === 1) {
+    gallery.innerHTML = `
+      <div class="pdp-main-img">
+        <img src="${images[0]}" alt="${p.name}" onclick="openLightbox(this.src)">
+      </div>`;
+  } else {
+    gallery.innerHTML = `
+      <div class="pdp-main-img"><div class="pdp-emoji">${p.emoji||'📦'}</div></div>`;
+  }
+}
+
+// ── LIGHTBOX ───────────────────────────────────────────────────
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightboxImg').src = src;
+  lb.classList.add('open');
+}
+function closeLightbox(e) {
+  if (e.target.tagName === 'IMG') return;
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+function selectColor(index) {
+  if (!currentPdpProduct || !currentPdpProduct.colors) return;
+  document.querySelectorAll('.color-swatch').forEach((s,i)=>s.classList.toggle('active',i===index));
+  document.getElementById('pdpColorName').textContent = currentPdpProduct.colors[index].name;
+  setupGallery(currentPdpProduct, index);
+}
+
+function pdpHoverThumb(src, thumb) {
+  const main = document.getElementById('pdpGalleryMain');
+  if (main) {
+    main.innerHTML = `<img src="${src}" alt="" onclick="openLightbox(this.src)">`;
+  }
+  document.querySelectorAll('.pdp-thumbs-vertical .pdp-thumb').forEach(t=>t.classList.remove('active'));
+  thumb.classList.add('active');
+}
+
+function togglePdpFavorite() {
+  if (!currentPdpProduct) return;
+  const btn = document.getElementById('pdpBtnWish');
+  toggleFavorite(currentPdpProduct.id, null);
+  const isFav = favorites.includes(currentPdpProduct.id);
+  btn.classList.toggle('favorited', isFav);
+  btn.textContent = isFav ? '♥' : '♡';
+}
+
+function showFavorites() {
+  if (!currentUser) {
+    showToast('Connectez-vous pour voir vos favoris', true);
+    openModal('authModal');
+    return;
+  }
+  if (favorites.length === 0) {
+    showToast('Aucun favori pour le moment');
+    return;
+  }
+  document.getElementById('pdpView').style.display='none';
+  document.getElementById('categoryView').style.display='none';
+  document.getElementById('catalogView').style.display='block';
+  searchQuery = '';
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+
+  const container = document.getElementById('catalogSections');
+  const banner = document.getElementById('apiBanner');
+  container.innerHTML = '';
+  container.appendChild(banner);
+
+  const list = allProducts.filter(p=>favorites.includes(p.id));
+  const catLabelsLocal = {sport:'Sport',tech:'Tech',audio:'Audio',tracking:'Tracking',vetements:'Vêtements'};
+  const badges = {new:'Nouveau',sale:'Promo',hot:'Populaire'};
+
+  const section = document.createElement('section');
+  section.className = 'catalog-section';
+  section.innerHTML = `
+    <div class="section-header">
+      <h2 class="section-title">Mes Favoris</h2>
+      <span class="section-count">${list.length} produit${list.length>1?'s':''}</span>
+    </div>
+    <div class="section-grid">
+      ${list.map((p,i)=>`
+        <div class="product-card" style="animation-delay:${i*.05}s" onclick="openPdp(${p.id})">
+          ${p.badge?`<span class="badge badge-${p.badge}">${badges[p.badge]}</span>`:''}
+          <div class="product-img-wrap">
+            ${p.image ? `<img class="product-img" src="${p.image}" alt="${p.name}">` : `<div class="product-emoji">${p.emoji||'📦'}</div>`}
+            <div class="card-actions">
+              <button class="btn-add" onclick="event.stopPropagation();addToCart(${p.id})">+ Ajouter</button>
+              <button class="btn-wish favorited" onclick="event.stopPropagation();toggleFavorite(${p.id},this)">♥</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="product-category">${catLabelsLocal[p.category]||p.category}</div>
+            <div class="product-name">${p.name}</div>
+            <div class="product-price">
+              ${p.price.toFixed(2).replace('.',',')} €
+              ${p.original_price?`<span class="original">${p.original_price.toFixed(2).replace('.',',')} €</span>`:''}
+            </div>
+            <div class="product-stock ${p.stock<=5?'low':''}">${p.stock<=5?`⚡ Plus que ${p.stock} en stock`:`En stock (${p.stock})`}</div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+  container.appendChild(section);
+  section.scrollIntoView({behavior:'smooth'});
+}
+
+function selectSize(btn) {
+  document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function closePdp() {
+  document.getElementById('pdpView').style.display = 'none';
+  if (pdpCameFromCategory) {
+    document.getElementById('categoryView').style.display = 'block';
+  } else {
+    document.getElementById('catalogView').style.display = 'block';
+  }
+  window.scrollTo(0,0);
+}
+
 function fmt(n){ return n.toFixed(2).replace('.',',')+' €'; }
 function toggleCart(){ document.getElementById('cartSidebar').classList.toggle('open'); document.getElementById('cartOverlay').classList.toggle('open'); }
 function openModal(id){ document.getElementById(id).classList.add('open'); }
@@ -573,6 +1204,23 @@ function showToast(msg,isErr=false){
   setTimeout(()=>t.classList.remove('show'),3000);
 }
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') {
+    if(document.getElementById('lightbox').classList.contains('open')) { document.getElementById('lightbox').classList.remove('open'); return; }
+    if(document.getElementById('pdpView').style.display==='block') { closePdp(); return; }
+    if(document.getElementById('categoryView').style.display==='block') { closeCategoryView(); return; }
+  }
+});
+document.querySelector('.logo').addEventListener('click', ()=>{
+  document.getElementById('pdpView').style.display='none';
+  document.getElementById('categoryView').style.display='none';
+  document.getElementById('catalogView').style.display='block';
+  searchQuery='';
+  document.getElementById('searchInput').value='';
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  renderSections();
+  window.scrollTo(0,0);
+});
 
 init();
 </script>
