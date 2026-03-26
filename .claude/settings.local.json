@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "WebFetch(domain:www.aliexpress.com)",
+      "WebFetch(domain:www.bestreviews.guide)",
+      "WebFetch(domain:blog.aliexpress.com)",
+      "WebFetch(domain:www.wiseshe.com)",
+      "WebFetch(domain:fr.aliexpress.com)",
+      "Bash(cd:*)",
+      "WebSearch",
+      "Bash(for dir:*)",
+      "Bash(do echo:*)",
+      "Read(//c/Users/happy gaming m1/APEX/Images/**)",
+      "Bash(done)",
+      "Bash(grep -v \"^avis$\")",
+      "Bash(find \"C:/Users/happy gaming m1/APEX/Images\" -name \"placeholder.txt\" -delete)",
+      "Bash(find \"C:/Users/happy gaming m1/APEX/Images\" -type d -empty -delete)"
+    ]
+  }
+}

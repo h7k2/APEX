@@ -1,684 +1,3 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>APEX — Sport & Tech</title>
-<link rel="icon" type="image/png" href="Images/Capture d'écran 2026-03-25 182332.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-<style>
-  :root { --bg:#0a0a0a;--surface:#111;--border:#1e1e1e;--accent:#3B82F6;--accent-hover:#60a5fa;--accent2:#3bffd8;--text:#f0f0f0;--muted:#666;--card:#141414; }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
-  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:.4}
-
-  /* ── HEADER ── */
-  .top-header{position:static;z-index:100;background:rgba(10,10,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-  .header-main{display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:68px;gap:2rem}
-  .logo{flex-shrink:0;cursor:pointer;display:flex;align-items:center}
-  .logo-img{height:38px;width:auto;display:block}
-  .search-bar{flex:1;max-width:560px;position:relative}
-  .search-bar input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:.65rem 1rem .65rem 2.8rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;border-radius:2px}
-  .search-bar input:focus{border-color:var(--accent)}
-  .search-bar input::placeholder{color:#555}
-  .search-bar svg{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--muted);width:18px;height:18px}
-  .header-icons{display:flex;align-items:center;gap:.25rem;flex-shrink:0}
-  .icon-btn{background:transparent;border:none;color:var(--muted);width:42px;height:42px;cursor:pointer;font-size:1.15rem;display:flex;align-items:center;justify-content:center;transition:color .2s;position:relative;border-radius:2px}
-  .icon-btn:hover{color:var(--text)}
-  .icon-btn.active-user{color:var(--accent)}
-  .icon-btn .badge-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;display:none}
-  .icon-btn .badge-dot.visible{display:block}
-  .cart-badge{position:absolute;top:4px;right:2px;background:var(--accent);color:#fff;font-size:.65rem;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px}
-
-  /* ── NAV ── */
-  .main-nav{border-bottom:1px solid var(--border);padding:0 3rem;overflow-x:auto}
-  .main-nav::-webkit-scrollbar{display:none}
-  .nav-links{display:flex;gap:0;list-style:none;justify-content:center}
-  .nav-links a{display:block;text-decoration:none;color:var(--muted);font-size:.78rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:.85rem 1.4rem;transition:color .2s,box-shadow .2s;white-space:nowrap}
-  .nav-links a:hover,.nav-links a.active{color:var(--text);box-shadow:inset 0 -2px 0 var(--accent)}
-
-  /* ── HERO ── */
-  .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:visible;border-bottom:1px solid var(--border)}
-  .hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0a0a0a 0%,#0f1628 40%,#0a0a0a 100%);z-index:0}
-  .hero-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(59,130,246,.12) 0%,transparent 70%)}
-  .hero-content{position:relative;z-index:1;max-width:800px;padding:5rem 2rem;display:flex;flex-direction:column;align-items:center}
-  .hero-logo{height:80px;width:auto;margin-bottom:2rem;filter:drop-shadow(0 4px 20px rgba(59,130,246,.3));animation:fadeUp .8s ease}
-  .hero-label{font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;display:inline-flex;align-items:center;gap:.75rem}
-  .hero-label::before,.hero-label::after{content:'';width:2.5rem;height:1px;background:var(--accent);opacity:.5}
-  .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,8rem);line-height:.92;margin-bottom:1.5rem;letter-spacing:.04em}
-  .hero h1 em{font-style:normal;color:var(--accent);display:block}
-  .hero p{color:var(--muted);font-size:1.05rem;line-height:1.7;max-width:500px;margin:0 auto 2.5rem}
-  .hero-cta{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:1rem 2.8rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:.12em;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s,transform .15s}
-  .hero-cta:hover{background:var(--accent-hover);transform:translateY(-2px)}
-  .hero-stats{display:flex;justify-content:center;gap:4rem;margin-top:3.5rem}
-  .stat-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--accent);line-height:1}
-  .stat-label{font-size:.72rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.25rem}
-
-  /* ── FILTERS ── */
-  .filters-bar{padding:2rem 3rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-  .filters{display:flex;gap:.5rem}
-  .filter-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.4rem 1rem;font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;transition:all .2s}
-  .filter-btn:hover,.filter-btn.active{border-color:var(--accent);color:var(--accent)}
-  .sort-select{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.4rem 1rem;font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;outline:none}
-  .sort-select option{background:var(--surface)}
-
-  /* ── CATALOG ── */
-  .catalog{padding:3rem}
-  .catalog-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem}
-  .catalog-title{font-family:'Bebas Neue',sans-serif;font-size:2rem}
-  .catalog-count{color:var(--muted);font-size:.85rem}
-
-  .api-banner{margin-bottom:1.5rem;padding:.65rem 1rem;font-size:.78rem;display:none;align-items:center;gap:.6rem;border:1px solid}
-  .api-banner.offline{border-color:#ff3b3b33;background:#ff3b3b11;color:#ff8080}
-  .api-banner.online{border-color:#3B82F633;background:#3B82F611;color:var(--accent)}
-  .api-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-  .api-banner.offline .api-dot{background:#ff3b3b}
-  .api-banner.online .api-dot{background:var(--accent);animation:blink 2s infinite}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-
-  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5px;background:var(--border)}
-  .product-card{background:var(--card);position:relative;overflow:hidden;cursor:pointer;transition:background .3s;opacity:0;animation:fadeUp .5s ease forwards}
-  .product-card:hover{background:#181818}
-  .product-card:hover .card-actions{opacity:1;transform:translateY(0)}
-  .product-card:hover .product-emoji{transform:scale(1.08) translateY(-6px)}
-  .badge{position:absolute;top:1rem;left:1rem;z-index:2;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;padding:.25rem .6rem;font-weight:500}
-  .badge-new{background:var(--accent);color:#fff}
-  .badge-sale{background:#ff3b3b;color:#fff}
-  .badge-hot{background:var(--accent2);color:#000}
-  .badge-shipping{background:rgba(59,130,246,.15);color:var(--accent);position:absolute;top:1rem;right:1rem;left:auto;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .5rem;font-weight:500;z-index:2}
-  .product-img-wrap{height:240px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f0f0f,#1a1a1a);position:relative}
-  .product-emoji{font-size:4.5rem;transition:transform .5s ease;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5))}
-  .product-img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
-  .product-card:hover .product-img{transform:scale(1.05)}
-  .card-actions{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.8));padding:1rem;opacity:0;transform:translateY(8px);transition:all .25s ease;display:flex;gap:.5rem}
-  .btn-add{flex:1;background:var(--accent);border:none;color:#fff;padding:.6rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.8rem;cursor:pointer;transition:background .2s;text-transform:uppercase}
-  .btn-add:hover{background:var(--accent-hover)}
-  .btn-wish{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:var(--text);width:36px;cursor:pointer;font-size:1rem;transition:all .2s}
-  .btn-wish.favorited{background:rgba(255,50,80,.2);border-color:rgba(255,50,80,.4);color:#ff5580}
-  .card-body{padding:1.25rem}
-  .product-category{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
-  .product-name{font-size:.95rem;font-weight:500;margin-bottom:.75rem;line-height:1.3}
-  .product-price{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--accent)}
-  .product-price .original{font-size:.9rem;color:var(--muted);text-decoration:line-through;margin-left:.4rem}
-  .product-stock{font-size:.72rem;color:var(--muted);margin-top:.3rem}
-  .product-stock.low{color:#ff8c42}
-  .product-rating{font-size:.75rem;color:var(--muted);margin-top:.35rem;display:flex;align-items:center;gap:.3rem}
-  .rating-stars{color:#f59e0b;font-size:.8rem}
-  .rating-count{color:var(--muted);font-size:.7rem}
-
-  .grid-loader{grid-column:1/-1;display:flex;align-items:center;justify-content:center;padding:5rem;color:var(--muted);gap:.75rem;background:var(--card)}
-  .spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
-
-  /* ── CART SIDEBAR ── */
-  .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(4px)}
-  .cart-overlay.open{opacity:1;pointer-events:all}
-  .cart-sidebar{position:fixed;top:0;right:0;width:420px;height:100vh;background:var(--surface);border-left:1px solid var(--border);z-index:201;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
-  .cart-sidebar.open{transform:translateX(0)}
-  .cart-header{padding:2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-  .cart-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.1em}
-  .close-btn{background:transparent;border:1px solid var(--border);color:var(--muted);width:36px;height:36px;cursor:pointer;font-size:1.2rem;transition:all .2s;display:flex;align-items:center;justify-content:center}
-  .close-btn:hover{border-color:var(--text);color:var(--text)}
-  .cart-items{flex:1;overflow-y:auto;padding:1.5rem 2rem}
-  .cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border);animation:slideIn .3s ease}
-  .cart-item-emoji{font-size:2.5rem;background:var(--card);width:60px;height:60px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-  .cart-item-info{flex:1}
-  .cart-item-name{font-size:.9rem;font-weight:500;margin-bottom:.3rem}
-  .cart-item-price{color:var(--accent);font-family:'Bebas Neue',sans-serif;font-size:1.1rem}
-  .cart-item-qty{display:flex;align-items:center;gap:.5rem;margin-top:.5rem}
-  .qty-btn{background:var(--border);border:none;color:var(--text);width:24px;height:24px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:background .2s}
-  .qty-btn:hover{background:var(--muted)}
-  .qty-val{font-size:.85rem;min-width:20px;text-align:center}
-  .remove-btn{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:1rem;transition:color .2s;align-self:flex-start}
-  .remove-btn:hover{color:#ff3b3b}
-  .cart-empty{text-align:center;padding:4rem 2rem;color:var(--muted)}
-  .cart-empty-icon{font-size:3rem;margin-bottom:1rem}
-  .cart-footer{padding:2rem;border-top:1px solid var(--border)}
-  .cart-total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.5rem}
-  .cart-total-label{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.1em}
-  .cart-total-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--accent)}
-  .checkout-btn{width:100%;background:var(--accent);border:none;color:#fff;padding:1rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s}
-  .checkout-btn:hover{background:var(--accent-hover);transform:translateY(-1px)}
-  .checkout-btn:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;transform:none}
-
-  /* ── MODALS ── */
-  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:400;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(6px)}
-  .modal-overlay.open{opacity:1;pointer-events:all}
-  .modal{background:var(--surface);border:1px solid var(--border);padding:2.5rem;width:100%;max-width:420px;position:relative;animation:fadeUp .3s ease}
-  .modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.08em;margin-bottom:.3rem}
-  .modal-subtitle{color:var(--muted);font-size:.85rem;margin-bottom:2rem}
-  .modal-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:2rem}
-  .modal-tab{flex:1;padding:.6rem;background:transparent;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
-  .modal-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
-  .modal-close{position:absolute;top:1rem;right:1rem;background:transparent;border:1px solid var(--border);color:var(--muted);width:32px;height:32px;cursor:pointer;font-size:1rem;transition:all .2s;display:flex;align-items:center;justify-content:center}
-  .modal-close:hover{border-color:var(--text);color:var(--text)}
-  .form-group{margin-bottom:1.25rem}
-  .form-label{display:block;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
-  .form-input{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:.75rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s}
-  .form-input:focus{border-color:var(--accent)}
-  .form-input::placeholder{color:#444}
-  .form-error{color:#ff5555;font-size:.8rem;margin-top:.75rem;display:none}
-  .form-error.show{display:block}
-  .btn-primary{width:100%;background:var(--accent);border:none;color:#fff;padding:.85rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-top:.5rem}
-  .btn-primary:hover{background:var(--accent-hover)}
-  .btn-primary:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
-
-  .recap-box{background:var(--card);border:1px solid var(--border);padding:1rem;margin-bottom:1rem}
-  .recap-label{color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem}
-  .recap-item{display:flex;justify-content:space-between;padding:.2rem 0;font-size:.85rem;color:var(--muted)}
-  .recap-total{margin-top:.75rem;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--accent)}
-
-  .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--accent);color:#fff;padding:.75rem 1.5rem;font-weight:500;font-size:.85rem;z-index:500;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}
-  .toast.show{transform:translateX(-50%) translateY(0)}
-  .toast.error{background:#ff3b3b;color:#fff}
-
-  /* ── PAGE PRODUIT PLEIN ÉCRAN ── */
-  #pdpView{display:none;animation:fadeUp .25s ease}
-  .pdp-breadcrumb-bar{padding:1rem 3rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--muted)}
-  .pdp-back{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;display:flex;align-items:center;gap:.4rem;padding:0;transition:color .2s;font-family:'DM Sans',sans-serif}
-  .pdp-back:hover{color:var(--text)}
-  .pdp-back svg{width:16px;height:16px}
-  .pdp-breadcrumb-bar .sep{opacity:.3}
-  .pdp-breadcrumb-bar .current{color:var(--text)}
-  .pdp-layout{display:grid;grid-template-columns:55% 45%;min-height:calc(100vh - 180px)}
-  .pdp-gallery{background:#0a0a0a;border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:calc(100vh - 180px)}
-  .pdp-main-img{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-  .pdp-main-img img{max-width:90%;max-height:90%;object-fit:contain;transition:transform .4s ease;cursor:pointer}
-  .pdp-main-img img:hover{transform:scale(1.02)}
-  .pdp-main-img .pdp-emoji{font-size:8rem;filter:drop-shadow(0 10px 40px rgba(0,0,0,.6))}
-  .pdp-thumbs{display:flex;gap:.6rem;padding:1rem 1.5rem;border-top:1px solid var(--border);overflow-x:auto;flex-shrink:0}
-  .pdp-thumbs::-webkit-scrollbar{height:3px}
-  .pdp-thumbs::-webkit-scrollbar-thumb{background:var(--border)}
-  .pdp-thumb{width:72px;height:72px;flex-shrink:0;border:1px solid var(--border);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#111;transition:border-color .2s;font-size:1.8rem}
-  .pdp-thumb.active{border-color:var(--accent)}
-  .pdp-thumb img{width:100%;height:100%;object-fit:cover}
-  .pdp-info{padding:3rem 3.5rem;overflow-y:auto;height:calc(100vh - 180px)}
-  .pdp-info::-webkit-scrollbar{width:4px}
-  .pdp-info::-webkit-scrollbar-thumb{background:var(--border)}
-  .pdp-badge-inline{display:inline-block;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;padding:.25rem .6rem;font-weight:500;margin-bottom:1rem}
-  .pdp-badge-inline.badge-new{background:var(--accent);color:#fff}
-  .pdp-badge-inline.badge-sale{background:#ff3b3b;color:#fff}
-  .pdp-badge-inline.badge-hot{background:var(--accent2);color:#000}
-  .pdp-cat{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
-  .pdp-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,3vw,3rem);line-height:1;letter-spacing:.03em;margin-bottom:1.5rem}
-  .pdp-price-row{display:flex;align-items:baseline;gap:.85rem;margin-bottom:.75rem}
-  .pdp-price{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--accent)}
-  .pdp-price-original{font-size:1rem;color:var(--muted);text-decoration:line-through}
-  .pdp-stock-info{font-size:.78rem;color:var(--muted);margin-bottom:2rem}
-  .pdp-stock-info.low{color:#ff8c42}
-  .pdp-viewers{font-size:.78rem;color:var(--accent);margin-bottom:1.5rem;opacity:.8}
-  .pdp-section-label{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem}
-  .pdp-sizes{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem}
-  .size-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.5rem .9rem;font-family:'DM Sans',sans-serif;font-size:.82rem;cursor:pointer;transition:all .2s;min-width:48px;text-align:center}
-  .size-btn:hover{border-color:var(--text);color:var(--text)}
-  .size-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,.08)}
-  .pdp-actions{display:flex;gap:.75rem;margin-bottom:2.5rem}
-  .pdp-qty{display:flex;align-items:center;border:1px solid var(--border);user-select:none}
-  .pdp-qty .qty-btn{background:transparent;border:none;color:var(--text);width:40px;height:48px;font-size:1.2rem;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif}
-  .pdp-qty .qty-btn:hover{background:rgba(255,255,255,.05)}
-  .pdp-qty .qty-val{font-size:.95rem;font-weight:500;min-width:32px;text-align:center}
-  .pdp-btn-add{flex:1;background:var(--accent);border:none;color:#fff;padding:1rem 1.5rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s}
-  .pdp-btn-add:hover{background:var(--accent-hover);transform:translateY(-1px)}
-  .pdp-btn-wish{background:transparent;border:1px solid var(--border);color:var(--muted);width:52px;cursor:pointer;font-size:1.2rem;transition:all .2s}
-  .pdp-btn-wish:hover,.pdp-btn-wish.favorited{border-color:#ff5580;color:#ff5580}
-  .pdp-btn-wish.favorited{background:rgba(255,50,80,.08)}
-  .pdp-desc-block{border-top:1px solid var(--border);padding-top:1.75rem;margin-bottom:2rem}
-  .pdp-desc-text{color:#999;font-size:.9rem;line-height:1.85}
-  .pdp-delivery{display:flex;flex-direction:column;gap:.75rem;border-top:1px solid var(--border);padding-top:1.75rem}
-  .pdp-delivery-row{display:flex;align-items:center;gap:.75rem;font-size:.82rem;color:var(--muted)}
-  .pdp-delivery-row svg{width:16px;height:16px;flex-shrink:0;color:var(--accent)}
-  @media(max-width:900px){
-    .pdp-layout{grid-template-columns:1fr}
-    .pdp-gallery{position:relative;height:60vw;min-height:280px}
-    .pdp-info{height:auto;padding:2rem 1.5rem}
-    .pdp-breadcrumb-bar{padding:1rem 1.5rem}
-    .pdp-gallery-with-thumbs{flex-direction:column-reverse}
-    .pdp-thumbs-vertical{flex-direction:row;border-right:none;border-top:1px solid var(--border);overflow-x:auto;overflow-y:hidden}
-  }
-
-  /* ── COLOR SWATCHES ── */
-  .pdp-colors{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2rem}
-  .color-swatch{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);cursor:pointer;transition:all .2s;position:relative}
-  .color-swatch:hover{border-color:var(--muted);transform:scale(1.1)}
-  .color-swatch.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,.25)}
-  .color-swatch-label{font-size:.75rem;color:var(--muted);margin-top:.25rem}
-
-  /* ── PDP GALLERY VERTICAL THUMBS ── */
-  .pdp-gallery-with-thumbs{display:flex;flex-direction:row;height:100%}
-  .pdp-thumbs-vertical{display:flex;flex-direction:column;gap:.6rem;padding:1rem;border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0}
-  .pdp-thumbs-vertical::-webkit-scrollbar{width:3px}
-  .pdp-thumbs-vertical::-webkit-scrollbar-thumb{background:var(--border)}
-  .pdp-thumbs-vertical .pdp-thumb{width:72px;height:72px}
-  .pdp-gallery-main{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-  .pdp-gallery-main img{max-width:90%;max-height:90%;object-fit:contain;transition:transform .4s ease;cursor:pointer}
-  .pdp-gallery-main img:hover{transform:scale(1.02)}
-  .pdp-gallery-main .pdp-emoji{font-size:8rem;filter:drop-shadow(0 10px 40px rgba(0,0,0,.6))}
-
-  /* ── LIGHTBOX ── */
-  .lightbox-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(8px);cursor:pointer}
-  .lightbox-overlay.open{opacity:1;pointer-events:all}
-  .lightbox-overlay img{max-width:85vw;max-height:85vh;object-fit:contain;border:1px solid var(--border);cursor:default}
-  .lightbox-close{position:absolute;top:1.5rem;right:1.5rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;width:40px;height:40px;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:501}
-  .lightbox-close:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3)}
-  .lightbox-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;width:48px;height:48px;font-size:2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:501;line-height:1}
-  .lightbox-arrow:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3)}
-  .lightbox-prev{left:1.5rem}
-  .lightbox-next{right:1.5rem}
-
-  /* ── TRUST BAR ── */
-  .trust-bar{display:flex;justify-content:center;gap:2.5rem;padding:.65rem 2rem;background:rgba(59,130,246,.04);border-bottom:1px solid var(--border)}
-  .trust-item{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--muted);letter-spacing:.02em}
-  .trust-item svg{color:var(--accent);flex-shrink:0}
-  @media(max-width:768px){.trust-bar{gap:1rem;flex-wrap:wrap;justify-content:center}.trust-item{font-size:.7rem}}
-
-
-  /* ── REVIEWS SECTION (full width below product) ── */
-  .pdp-bottom-sections{padding:0 3rem 3rem;max-width:1400px;margin:0 auto}
-  .pdp-reviews-section{border-top:1px solid var(--border);padding-top:2.5rem;margin-top:1rem}
-  .pdp-reviews-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem}
-  .pdp-reviews-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.05em}
-  .pdp-reviews-avg{display:flex;align-items:center;gap:.5rem;color:var(--muted);font-size:.95rem}
-  .pdp-reviews-stars{color:#f59e0b;font-size:1.1rem}
-  .reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem}
-  .review-card{border:1px solid var(--border);padding:1.25rem;background:var(--surface);border-radius:2px}
-  .review-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
-  .review-author{font-weight:500;font-size:.88rem}
-  .review-verified{font-size:.7rem;color:var(--accent);margin-left:.5rem;font-weight:400}
-  .review-date{color:var(--muted);font-size:.75rem}
-  .review-stars{color:#f59e0b;font-size:.85rem;margin-bottom:.5rem}
-  .review-text{color:#bbb;font-size:.85rem;line-height:1.7}
-  .review-images{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap}
-  .review-images img{width:80px;height:80px;object-fit:cover;border:1px solid var(--border);cursor:pointer;transition:border-color .2s;border-radius:2px}
-  .review-images img:hover{border-color:var(--accent)}
-
-  /* ── SIMILAR PRODUCTS ── */
-  .pdp-similar-section{border-top:1px solid var(--border);padding-top:2.5rem;margin-top:2.5rem}
-  .pdp-similar-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.05em;margin-bottom:2rem}
-  .similar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem}
-  .similar-card{border:1px solid var(--border);background:var(--card);cursor:pointer;transition:border-color .2s,transform .2s;overflow:hidden;border-radius:2px}
-  .similar-card:hover{border-color:var(--accent);transform:translateY(-3px)}
-  .similar-card-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--surface)}
-  .similar-card-body{padding:1rem}
-  .similar-card-name{font-size:.85rem;font-weight:500;margin-bottom:.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .similar-card-price{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;color:var(--accent)}
-  @media(max-width:900px){
-    .pdp-bottom-sections{padding:0 1.5rem 2rem}
-    .reviews-grid{grid-template-columns:1fr}
-    .similar-grid{grid-template-columns:repeat(2,1fr)}
-  }
-
-  /* ── CATEGORY PAGE ── */
-  #categoryView{display:none;animation:fadeUp .25s ease}
-  .cat-header-bar{padding:1.5rem 3rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:1rem}
-  .cat-back{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:.85rem;display:flex;align-items:center;gap:.4rem;padding:0;transition:color .2s;font-family:'DM Sans',sans-serif}
-  .cat-back:hover{color:var(--text)}
-  .cat-back svg{width:16px;height:16px}
-  .cat-title-bar{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.05em}
-  .cat-count-bar{color:var(--muted);font-size:.82rem}
-  .cat-page-grid{padding:2rem 3rem}
-  .cat-products{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5px;background:var(--border)}
-  @media(max-width:768px){
-    .cat-header-bar{padding:1rem 1.5rem}
-    .cat-page-grid{padding:1.5rem 1rem}
-  }
-
-  /* ── SECTIONS CATALOGUE ── */
-  .catalog-section{padding:3rem 3rem 1rem;border-bottom:1px solid var(--border)}
-  .catalog-section:last-of-type{border-bottom:none}
-  .section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.5rem}
-  .section-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.04em}
-  .section-count{color:var(--muted);font-size:.82rem}
-  .section-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5px;background:var(--border)}
-  .section-see-more{display:flex;justify-content:center;padding:2rem 0 1rem}
-  .btn-see-more{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.6rem 2rem;font-family:'DM Sans',sans-serif;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s}
-  .btn-see-more:hover{border-color:var(--accent);color:var(--accent)}
-
-  /* ── FOOTER ── */
-  footer{border-top:1px solid var(--border);background:var(--surface);margin-top:3rem}
-  .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;padding:3rem;max-width:1400px;margin:0 auto}
-  .footer-logo{margin-bottom:.75rem}
-  .footer-logo img{height:32px;width:auto}
-  .footer-about{color:var(--muted);font-size:.82rem;line-height:1.7}
-  .footer-title{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text);font-weight:500;margin-bottom:1rem}
-  .footer-col a{display:block;color:var(--muted);text-decoration:none;font-size:.82rem;padding:.25rem 0;transition:color .2s}
-  .footer-col a:hover{color:var(--accent)}
-  .footer-payments{display:flex;flex-wrap:wrap;gap:.5rem}
-  .pay-badge{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);padding:.35rem .7rem;font-size:.7rem;font-weight:500;letter-spacing:.05em}
-  .footer-social{display:flex;gap:1rem}
-  .social-link{color:var(--muted);font-size:.82rem;text-decoration:none;transition:color .2s}
-  .social-link:hover{color:var(--accent)}
-  .footer-bottom{text-align:center;padding:1.5rem 3rem;border-top:1px solid var(--border);color:var(--muted);font-size:.75rem}
-  @media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr;gap:2rem}}
-  @media(max-width:480px){.footer-grid{grid-template-columns:1fr}}
-
-  ::-webkit-scrollbar{width:4px}
-  ::-webkit-scrollbar-track{background:var(--bg)}
-  ::-webkit-scrollbar-thumb{background:var(--border)}
-
-  @keyframes spin{to{transform:rotate(360deg)}}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-  @keyframes cartPulse{0%{transform:scale(1)}50%{transform:scale(1.3);color:var(--accent)}100%{transform:scale(1)}}
-
-  @media(max-width:768px){
-    .header-main{padding:0 1rem;gap:1rem}
-    .search-bar{max-width:none}
-    .main-nav{padding:0 1rem}
-    .hero{height:60vh;min-height:400px}
-    .hero h1{font-size:clamp(3rem,10vw,5rem)}
-    .hero-stats{gap:2rem}
-    .filters-bar{padding:1.5rem;flex-direction:column;gap:1rem;align-items:flex-start}
-    .catalog{padding:2rem 1rem}
-    .products-grid{grid-template-columns:repeat(2,1fr)}
-    .cart-sidebar{width:100%}
-    footer .footer-grid{padding:2rem 1rem}
-  }
-</style>
-</head>
-<body>
-
-<!-- ── HEADER ── -->
-<div class="top-header">
-  <div class="header-main">
-    <div class="logo" onclick="location.reload()"><img src="Images/Capture d'écran 2026-03-25 182332.png" alt="APEX" class="logo-img"></div>
-    <div class="search-bar">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="searchInput" placeholder="Rechercher un produit, une marque..." oninput="searchProducts(this.value)">
-    </div>
-    <div class="header-icons">
-      <button class="icon-btn" id="authBtn" onclick="handleAuthClick()" title="Mon compte">
-        <span id="authBtnIcon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </span>
-        <span class="badge-dot" id="authDot"></span>
-      </button>
-      <button class="icon-btn" id="favBtn" onclick="showFavorites()" title="Favoris">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      </button>
-      <button class="icon-btn" onclick="toggleCart()" title="Panier">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        <span class="cart-badge" id="cartCount" style="display:none">0</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- ── NAV ── -->
-  <nav class="main-nav">
-    <div class="nav-links">
-      <a href="#" onclick="openCategoryPage(event,this,'section-nouveautes')">Nouveaut&eacute;s</a>
-      <a href="#" onclick="openCategoryPage(event,this,'section-topventes')">Top ventes</a>
-      <a href="#" onclick="openCategoryPage(event,this,'section-vetements')">V&ecirc;tements</a>
-      <a href="#" onclick="openCategoryPage(event,this,'section-sport')">Sport</a>
-      <a href="#" onclick="openCategoryPage(event,this,'section-accessoires')">Accessoires</a>
-      <a href="#" onclick="openCategoryPage(event,this,'section-tech')">Tech</a>
-      <a href="#" onclick="openCategoryPage(event,this,'section-promos')">Promos</a>
-    </div>
-  </nav>
-</div>
-
-<div class="trust-bar">
-  <div class="trust-item">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M5 8h14M5 8a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2M5 8V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2"/></svg>
-    Livraison gratuite dès 50€
-  </div>
-  <div class="trust-item">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M9 14l-4-4 4-4M5 10h11a4 4 0 0 1 0 8h-1"/></svg>
-    Retours gratuits 30 jours
-  </div>
-  <div class="trust-item">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-    Paiement 100% sécurisé
-  </div>
-  <div class="trust-item">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-    Garantie qualité APEX
-  </div>
-</div>
-
-<div id="catalogView">
-
-<!-- ── HERO ── -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-content">
-    <div class="hero-label">Collection 2026</div>
-    <h1>Sport.<br><em>Redefined.</em></h1>
-    <p>Des accessoires tech pensés pour les athlètes modernes. Performance maximale, design minimaliste.</p>
-    <a href="#section-nouveautes" class="hero-cta">Découvrir la collection</a>
-    <div class="hero-stats">
-      <div><div class="stat-val" id="statProducts">—</div><div class="stat-label">Produits</div></div>
-      <div><div class="stat-val">4.9★</div><div class="stat-label">Note moy.</div></div>
-      <div><div class="stat-val">24h</div><div class="stat-label">Livraison</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ── CATALOGUE PAR SECTIONS ── -->
-<div id="catalogSections">
-  <div class="api-banner" id="apiBanner" style="margin:1rem 3rem 0"><div class="api-dot"></div><span id="apiBannerText"></span></div>
-</div>
-
-<!-- PANIER -->
-<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
-<div class="cart-sidebar" id="cartSidebar">
-  <div class="cart-header">
-    <span class="cart-title">Votre panier</span>
-    <button class="close-btn" onclick="toggleCart()">✕</button>
-  </div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-footer">
-    <div class="cart-total-row">
-      <span class="cart-total-label">Total</span>
-      <span class="cart-total-val" id="cartTotal">0,00 €</span>
-    </div>
-    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()" disabled>Passer la commande</button>
-  </div>
-</div>
-
-<!-- AUTH MODAL -->
-<div class="modal-overlay" id="authModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('authModal')">✕</button>
-    <img src="Images/Capture d'écran 2026-03-25 182332.png" alt="APEX" style="height:36px;margin-bottom:.5rem">
-    <div class="modal-subtitle">Accédez à votre compte pour commander</div>
-    <div class="modal-tabs">
-      <button class="modal-tab active" id="tabLogin" onclick="switchTab('login')">Connexion</button>
-      <button class="modal-tab" id="tabRegister" onclick="switchTab('register')">Inscription</button>
-    </div>
-    <div id="loginForm">
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input class="form-input" type="email" id="loginEmail" placeholder="votre@email.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Mot de passe</label>
-        <input class="form-input" type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
-      </div>
-      <div class="form-error" id="loginError"></div>
-      <button class="btn-primary" id="loginBtn" onclick="login()">Se connecter</button>
-    </div>
-    <div id="registerForm" style="display:none">
-      <div class="form-group">
-        <label class="form-label">Nom complet</label>
-        <input class="form-input" type="text" id="regName" placeholder="Jean Dupont">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input class="form-input" type="email" id="regEmail" placeholder="votre@email.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Mot de passe</label>
-        <input class="form-input" type="password" id="regPassword" placeholder="Min. 8 caractères" onkeydown="if(event.key==='Enter')register()">
-      </div>
-      <div class="form-error" id="registerError"></div>
-      <button class="btn-primary" id="registerBtn" onclick="register()">Créer mon compte</button>
-    </div>
-  </div>
-</div>
-
-<!-- CHECKOUT MODAL -->
-<div class="modal-overlay" id="checkoutModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('checkoutModal')">✕</button>
-    <div class="modal-title">Commande</div>
-    <div class="modal-subtitle">Livraison & confirmation</div>
-    <div class="form-group">
-      <label class="form-label">Adresse de livraison</label>
-      <input class="form-input" type="text" id="orderAddress" placeholder="12 rue de la Paix, 75001 Paris">
-    </div>
-    <div class="recap-box">
-      <div class="recap-label">Récapitulatif</div>
-      <div id="checkoutSummary"></div>
-      <div class="recap-total" id="checkoutTotalDisplay"></div>
-    </div>
-    <div class="form-error" id="checkoutError"></div>
-    <button class="btn-primary" id="confirmOrderBtn" onclick="confirmOrder()">Confirmer la commande</button>
-  </div>
-</div>
-
-</div><!-- /#catalogView -->
-
-<!-- ── PAGE PRODUIT PLEIN ÉCRAN ── -->
-<div id="pdpView">
-  <div class="pdp-breadcrumb-bar">
-    <button class="pdp-back" onclick="closePdp()">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-      Retour
-    </button>
-    <span class="sep">›</span>
-    <span id="pdpBreadCat"></span>
-    <span class="sep">›</span>
-    <span class="current" id="pdpBreadName"></span>
-  </div>
-  <div class="pdp-layout">
-    <div class="pdp-gallery" id="pdpGallery">
-      <div class="pdp-main-img" id="pdpMainImg"></div>
-      <div class="pdp-thumbs" id="pdpThumbs"></div>
-    </div>
-    <div class="pdp-info">
-      <div id="pdpBadgeEl"></div>
-      <div class="pdp-cat" id="pdpCat"></div>
-      <div class="pdp-name" id="pdpNameEl"></div>
-      <div class="pdp-price-row">
-        <span class="pdp-price" id="pdpPriceEl"></span>
-        <span class="pdp-price-original" id="pdpPriceOrig"></span>
-      </div>
-      <div class="pdp-stock-info" id="pdpStockEl"></div>
-      <div class="pdp-viewers" id="pdpViewers"></div>
-      <div id="pdpColorsBlock" style="display:none">
-        <div class="pdp-section-label">Couleur — <span id="pdpColorName"></span></div>
-        <div class="pdp-colors" id="pdpColors"></div>
-      </div>
-      <div id="pdpSizesBlock" style="display:none">
-        <div class="pdp-section-label">Taille</div>
-        <div class="pdp-sizes" id="pdpSizes"></div>
-      </div>
-      <div class="pdp-actions">
-        <div class="pdp-qty">
-          <button class="qty-btn" onclick="changePdpQty(-1)">−</button>
-          <span class="qty-val" id="pdpQty">1</span>
-          <button class="qty-btn" onclick="changePdpQty(1)">+</button>
-        </div>
-        <button class="pdp-btn-add" id="pdpBtnAdd">+ Ajouter au panier</button>
-        <button class="pdp-btn-wish" id="pdpBtnWish" onclick="togglePdpFavorite()">♡</button>
-      </div>
-      <div class="pdp-desc-block">
-        <div class="pdp-section-label" style="margin-bottom:.75rem">Description</div>
-        <div class="pdp-desc-text" id="pdpDescEl"></div>
-      </div>
-      <div class="pdp-delivery">
-        <div class="pdp-delivery-row">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M5 8h14M5 8a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2M5 8V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2"/></svg>
-          Livraison gratuite dès 50€ — expédié sous 24h
-        </div>
-        <div class="pdp-delivery-row">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M9 14l-4-4 4-4M5 10h11a4 4 0 0 1 0 8h-1"/></svg>
-          Retours gratuits sous 30 jours
-        </div>
-        <div class="pdp-delivery-row">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Paiement 100% sécurisé
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="pdp-bottom-sections">
-    <div class="pdp-reviews-section" id="pdpReviews"></div>
-    <div class="pdp-similar-section" id="pdpSimilar"></div>
-  </div>
-</div>
-
-<!-- ── CATEGORY PAGE ── -->
-<div id="categoryView">
-  <div class="cat-header-bar">
-    <button class="cat-back" onclick="closeCategoryView()">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-      Retour
-    </button>
-    <span class="cat-title-bar" id="catTitle"></span>
-    <span class="cat-count-bar" id="catCount"></span>
-  </div>
-  <div class="cat-page-grid">
-    <div class="cat-products" id="catProducts"></div>
-  </div>
-</div>
-
-<!-- ── LIGHTBOX ── -->
-<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
-  <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
-  <button class="lightbox-arrow lightbox-prev" onclick="event.stopPropagation();lightboxNav(-1)">‹</button>
-  <img id="lightboxImg" src="" alt="">
-  <button class="lightbox-arrow lightbox-next" onclick="event.stopPropagation();lightboxNav(1)">›</button>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<footer>
-  <div class="footer-grid">
-    <div class="footer-col">
-      <div class="footer-logo"><img src="Images/Capture d'écran 2026-03-25 182332.png" alt="APEX"></div>
-      <p class="footer-about">Des accessoires sport & tech pensés pour les athlètes modernes. Performance maximale, design minimaliste.</p>
-    </div>
-    <div class="footer-col">
-      <div class="footer-title">Navigation</div>
-      <a href="#" onclick="event.preventDefault();window.scrollTo(0,0)">Accueil</a>
-      <a href="#" onclick="openCategoryPage(event,null,'section-nouveautes')">Nouveautés</a>
-      <a href="#" onclick="openCategoryPage(event,null,'section-sport')">Sport</a>
-      <a href="#" onclick="openCategoryPage(event,null,'section-promos')">Promos</a>
-    </div>
-    <div class="footer-col">
-      <div class="footer-title">Aide</div>
-      <a href="#">Suivi de commande</a>
-      <a href="#">Retours & échanges</a>
-      <a href="#">FAQ</a>
-      <a href="#">Contact</a>
-    </div>
-    <div class="footer-col">
-      <div class="footer-title">Paiement sécurisé</div>
-      <div class="footer-payments">
-        <span class="pay-badge">VISA</span>
-        <span class="pay-badge">MC</span>
-        <span class="pay-badge">PayPal</span>
-        <span class="pay-badge">Apple Pay</span>
-      </div>
-      <div class="footer-title" style="margin-top:1.5rem">Suivez-nous</div>
-      <div class="footer-social">
-        <a href="#" class="social-link">Instagram</a>
-        <a href="#" class="social-link">TikTok</a>
-        <a href="#" class="social-link">Twitter</a>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div>&copy; 2026 APEX Sport & Tech — Tous droits réservés</div>
-  </div>
-</footer>
-
-<script>
-// ── CONFIG ──────────────────────────────────────────────────────
-const API = 'http://localhost:8000';
-
 const DEMO = [
   {id:9,name:"Veste Running AeroFit Pro",category:"vetements",image:"Images/vetements/veste noire/veste-aerofit-pro.png",price:29.99,original_price:null,stock:10,badge:"new",description:"Veste de sport légère et respirante, conçue pour les athlètes en mouvement. Séchage rapide, panneaux en maille ventilés et bandes réfléchissantes pour une visibilité optimale. Fermeture éclair intégrale. Idéale pour la course, le fitness et les activités outdoor. Coloris Noir — Collection Printemps/Été.",
     variants:{label:'Taille',options:['S','M','L','XL']}},
@@ -727,7 +46,7 @@ const DEMO = [
     images:["Images/vetements/jogging california/Capture d'écran 2026-03-24 181611.png","Images/vetements/jogging california/Capture d'écran 2026-03-24 181617.png","Images/vetements/jogging california/Capture d'écran 2026-03-24 181623.png","Images/vetements/jogging california/Capture d'écran 2026-03-24 181635.png"],
     variants:{label:'Taille',options:['S','M','L','XL','XXL']}
   },
-  {id:19,name:"Rouleau Massage FoamRelax Pro",category:"sport",image:"Images/accessoire/rouleau yoga/image.png",price:22.99,original_price:null,stock:30,badge:"new",description:"Rouleau de massage à relief profond pour la récupération musculaire et le relâchement myofascial. Surface texturée à picots pour un massage ciblé des points de tension. Mousse EVA haute densité, légère et résistante. Idéal pour l'échauffement, la récupération après l'entraînement et le yoga. Compact et transportable — 33 cm.",
+  {id:19,name:"Rouleau Massage FoamRelax Pro",category:"tracking",image:"Images/accessoire/rouleau yoga/image.png",price:22.99,original_price:null,stock:30,badge:"new",description:"Rouleau de massage à relief profond pour la récupération musculaire et le relâchement myofascial. Surface texturée à picots pour un massage ciblé des points de tension. Mousse EVA haute densité, légère et résistante. Idéal pour l'échauffement, la récupération après l'entraînement et le yoga. Compact et transportable — 33 cm.",
     images:["Images/accessoire/rouleau yoga/image.png","Images/accessoire/rouleau yoga/image2.png","Images/accessoire/rouleau yoga/S6790f28aa2be465d8beb42dbf2e9f740U.jpg_220x220q75.jpg_.png"]
   },
   {id:20,name:"Gants MMA StormLight Semi-Pro",category:"sport",image:"Images/sport/gants/Capture d'écran 2026-03-24 203419.png",price:34.99,original_price:null,stock:20,badge:null,description:"Gants de MMA semi-pro avec protection renforcée des articulations. Cuir synthétique haute résistance, rembourrage multi-couches pour absorber les impacts. Fermeture velcro ajustable au poignet pour un maintien optimal. Paume ouverte pour les saisies et le grappling. Convient pour le MMA, le sparring et l'entraînement au sac de frappe.",
@@ -748,7 +67,7 @@ const DEMO = [
   {id:24,name:"Pistolet Massage DeepPulse X6",category:"tech",image:"Images/tech/pisto massage/image.png",price:59.99,original_price:79.99,stock:10,badge:"sale",description:"Pistolet de massage à percussion profonde avec écran LCD tactile. 6 têtes interchangeables pour cibler tous les groupes musculaires. 30 niveaux d'intensité, moteur brushless ultra-silencieux. Autonomie 6 heures avec batterie rechargeable USB-C. Soulage les tensions, accélère la récupération et améliore la circulation sanguine. Livré avec mallette de transport.",
     images:["Images/tech/pisto massage/image.png","Images/tech/pisto massage/Capture d'écran 2026-03-24 203208.png","Images/tech/pisto massage/Capture d'écran 2026-03-24 203234.png"]
   },
-  {id:25,name:"Shaker ProStack 3-en-1",category:"sport",image:"Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212514.png",price:12.99,original_price:null,stock:45,badge:"hot",description:"Shaker protéiné 3-en-1 avec compartiments empilables. Capacité 600 ml avec boule mélangeuse en inox pour un mélange sans grumeaux. Compartiment à poudre et compartiment à pilules/compléments intégrés. Plastique Tritan sans BPA, étanche et résistant. Graduation de mesure en ml et oz. Passe au lave-vaisselle — indispensable pour la salle.",
+  {id:25,name:"Shaker ProStack 3-en-1",category:"tracking",image:"Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212514.png",price:12.99,original_price:null,stock:45,badge:"hot",description:"Shaker protéiné 3-en-1 avec compartiments empilables. Capacité 600 ml avec boule mélangeuse en inox pour un mélange sans grumeaux. Compartiment à poudre et compartiment à pilules/compléments intégrés. Plastique Tritan sans BPA, étanche et résistant. Graduation de mesure en ml et oz. Passe au lave-vaisselle — indispensable pour la salle.",
     images:["Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212514.png","Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212532.png","Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212542.png","Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212549.png","Images/accessoire/rouleau yoga/bouteille/Capture d'écran 2026-03-24 212601.png"]
   },
   {id:26,name:"Punching Ball Reflex Trainer",category:"sport",image:"Images/sport/boxe punch/Capture d'écran 2026-03-24 212019.png",price:44.99,original_price:null,stock:8,badge:"new",description:"Punching-ball sur pied avec barre de réaction flexible. Hauteur réglable de 120 à 180 cm pour s'adapter à toutes les tailles. Base ventouse ultra-stable sans perçage. Balle en PU souple pour un rebond rapide et réaliste. Améliore les réflexes, la coordination et la vitesse de frappe. Idéal pour la boxe, le MMA et le cardio à domicile.",
@@ -767,20 +86,49 @@ const DEMO = [
   {id:55,name:"Chaise Romaine PowerStation",category:"sport",image:"Images/sport/chaise romaine/Capture d'écran 2026-03-26 112009.png",price:199.99,original_price:249.99,stock:5,badge:"sale",description:"Station de musculation multifonctionnelle tout-en-un : dips, tractions, pompes et relevés de jambes. Structure en acier robuste avec capacité de charge 150 kg. Dossier rembourré et accoudoirs ergonomiques pour un confort optimal. Hauteur ajustable pour s'adapter à toutes les morphologies. Poignées multi-grip pour varier les exercices. Compacte et stable — l'équipement ultime pour le home gym.",
     images:["Images/sport/chaise romaine/Capture d'écran 2026-03-26 112009.png","Images/sport/chaise romaine/Capture d'écran 2026-03-26 112018.png","Images/sport/chaise romaine/Capture d'écran 2026-03-26 112028.png"]
   },
-  {id:56,name:"Kit Sac de Frappe + Gants BoxStorm",category:"sport",image:"Images/sport/sac frappe gant/Capture d'écran 2026-03-26 150753.png",price:59.99,original_price:79.99,stock:8,badge:"sale",description:"Kit complet de boxe avec sac de frappe creux en tissu Oxford haute résistance et paire de gants incluse. Sac suspendu renforcé avec chaîne et mousqueton en acier. Rembourrage dense pour absorber les impacts. Idéal pour l'entraînement cardio, la boxe et le défoulement à domicile. Installation facile au plafond ou sur support.",
-    images:["Images/sport/sac frappe gant/Capture d'écran 2026-03-26 150753.png","Images/sport/sac frappe gant/Capture d'écran 2026-03-26 150802.png","Images/sport/sac frappe gant/Capture d'écran 2026-03-26 150808.png","Images/sport/sac frappe gant/Capture d'écran 2026-03-26 150919.png"]
-  },
-  {id:57,name:"Kit Haltères 2-en-1 PowerLift 30kg",category:"sport",image:"Images/sport/halters/Capture d'écran 2026-03-26 151120.png",price:69.99,original_price:89.99,stock:6,badge:"sale",description:"Set de musculation convertible 2-en-1 : utilisable en haltères séparées (2x15 kg) ou en barre longue grâce au connecteur inclus. Disques ajustables en ciment recouvert de vinyle pour protéger le sol. Barres chromées avec moletage antidérapant. Parfait pour le home gym — développé couché, curls, squats et plus encore.",
-    images:["Images/sport/halters/Capture d'écran 2026-03-26 151120.png","Images/sport/halters/Capture d'écran 2026-03-26 151146.png","Images/sport/halters/Capture d'écran 2026-03-26 151156.png"],
-    variants:{label:'Poids',options:['15 kg','20 kg','25 kg','30 kg']}
-  },
-  {id:58,name:"Haltères Réglables DualFit Pro 2-en-1",category:"sport",image:"Images/sport/haltères/Capture d'écran 2026-03-26 151340.png",price:54.99,original_price:69.99,stock:10,badge:"sale",description:"Haltères réglables premium avec système de verrouillage rapide. Convertibles en barre droite avec le connecteur fourni. Disques en acier chromé avec revêtement caoutchouc. Poignées ergonomiques texturées pour un grip optimal. Ajustable de 5 à 30 kg par côté. L'équipement idéal pour un entraînement complet à la maison.",
-    images:["Images/sport/haltères/Capture d'écran 2026-03-26 151340.png","Images/sport/haltères/Capture d'écran 2026-03-26 151351.png","Images/sport/haltères/Capture d'écran 2026-03-26 151417.png"],
-    variants:{label:'Poids',options:['10 kg','15 kg','20 kg','25 kg','30 kg']}
-  },
-  {id:59,name:"Cible de Boxe Murale StrikeWall",category:"sport",image:"Images/sport/Tapis de poinçonnage mural/Capture d'écran 2026-03-26 151653.png",price:34.99,original_price:null,stock:15,badge:"new",description:"Cible d'entraînement murale en mousse haute densité pour la boxe, le taekwondo et les arts martiaux. Fixation murale solide avec plaque en acier. Surface d'impact souple pour protéger les articulations. Silhouette ergonomique pour travailler la précision des frappes. Parfait pour l'entraînement à domicile ou en salle.",
-    images:["Images/sport/Tapis de poinçonnage mural/Capture d'écran 2026-03-26 151653.png","Images/sport/Tapis de poinçonnage mural/Capture d'écran 2026-03-26 151722.png","Images/sport/Tapis de poinçonnage mural/Capture d'écran 2026-03-26 151730.png"]
-  },
+
+  // ── NOUVEAUX PRODUITS ─────────────────────────────────────────
+
+  // VÊTEMENTS
+  {id:29,name:"T-Shirt Quick-Dry AeroFlex",category:"vetements",image:"Images/vetements/tshirt-quickdry/placeholder.txt",price:24.99,original_price:null,stock:30,badge:"new",description:"T-shirt de sport à séchage rapide en polyester respirant. Coupe ajustée qui épouse le corps sans comprimer. Technologie d'évacuation de l'humidité pour rester au sec pendant l'effort. Coutures plates anti-frottements. Idéal pour la course, le fitness et le CrossFit. Disponible en plusieurs coloris — Collection Printemps/Été.",
+    variants:{label:'Taille',options:['S','M','L','XL']}},
+  {id:30,name:"Short 2-en-1 RunDual Pro",category:"vetements",image:"Images/vetements/short-2in1/placeholder.txt",price:29.99,original_price:null,stock:25,badge:"hot",description:"Short de running 2-en-1 avec cuissard compression intégré. Tissu extérieur léger et respirant, doublure stretch 4 directions. Poche latérale zippée pour smartphone et clés. Coupe 5 pouces, taille élastique avec cordon. Parfait pour la course, le trail et le HIIT. Séchage ultra-rapide.",
+    variants:{label:'Taille',options:['S','M','L','XL']}},
+  {id:31,name:"Pack 3 Boxers Sport IceFit",category:"vetements",image:"Images/vetements/boxers-sport/placeholder.txt",price:37.99,original_price:null,stock:20,badge:"new",description:"Lot de 3 boxers sport en tissu ice-silk ultra-respirant. Coupe longue anti-frottements pour le sport intensif. Technologie anti-humidité et séchage rapide. Ceinture élastique large et confortable. Tissu polyamide/élasthanne doux et extensible. Idéaux sous un short de sport ou au quotidien.",
+    variants:{label:'Taille',options:['S','M','L','XL']}},
+  {id:32,name:"Débardeur Gym RacerBack",category:"vetements",image:"Images/vetements/debardeur-gym/placeholder.txt",price:22.99,original_price:null,stock:35,badge:null,description:"Débardeur de musculation coupe racerback en mesh polyester 100%. Séchage ultra-rapide et ventilation maximale. Coupe ample pour une liberté de mouvement totale. Coutures renforcées aux emmanchures. Design athlétique avec dos nageur. Parfait pour la salle de sport, le CrossFit et les entraînements intensifs.",
+    variants:{label:'Taille',options:['S','M','L','XL']}},
+  {id:33,name:"Legging Compression ThermoRun",category:"vetements",image:"Images/vetements/collants-compression/placeholder.txt",price:42.99,original_price:null,stock:18,badge:"new",description:"Collant de compression pour homme en tissu élastique 4 directions. Maintien musculaire ciblé pour réduire la fatigue et accélérer la récupération. Tissu thermo-régulant chaud en hiver, respirant en été. Coutures plates anti-irritation. Bande silicone à la taille pour un maintien sans glissement. Running, fitness, ski de fond.",
+    variants:{label:'Taille',options:['S','M','L','XL']}},
+  {id:34,name:"Chaussettes Compression SportPack",category:"vetements",image:"Images/vetements/chaussettes-compression/placeholder.txt",price:24.99,original_price:null,stock:40,badge:null,description:"Pack de 2 paires de chaussettes de compression graduée. Tissu respirant avec zones de ventilation. Renforts au talon et à la pointe pour une durabilité accrue. Compression ciblée pour améliorer la circulation sanguine et réduire la fatigue. Adaptées au running, cyclisme, fitness et récupération post-entraînement.",
+    variants:{label:'Taille',options:['39-42','43-46']}},
+
+  // SPORT / FITNESS
+  {id:35,name:"Kit Bandes de Résistance FlexPower",category:"sport",image:"Images/sport/bandes-resistance/placeholder.txt",price:44.99,original_price:54.99,stock:22,badge:"sale",description:"Kit complet de 14 pièces : 5 bandes de résistance TPE (2 à 25 kg), 2 poignées ergonomiques, 2 sangles de cheville, 1 ancrage de porte, 1 sac de transport. Matériau hypoallergénique et sans latex. Idéal pour la musculation à domicile, la rééducation, le Pilates et le stretching. Remplace une salle de sport complète."},
+  {id:36,name:"Corde à Sauter SmartSkip LCD",category:"sport",image:"Images/sport/corde-sauter-lcd/placeholder.txt",price:27.99,original_price:null,stock:35,badge:"hot",description:"Corde à sauter avec écran LCD digital intégré. Compteur automatique de sauts, temps, calories brûlées et tours. Roulements à billes pour une rotation fluide et silencieuse. Longueur ajustable jusqu'à 3 mètres. Poignées antidérapantes ergonomiques. Mode sans corde (cordless) inclus pour s'entraîner en intérieur sans contrainte d'espace."},
+  {id:37,name:"Corde à Sauter Xiaomi Mijia Smart 2",category:"sport",image:"Images/sport/corde-sauter-xiaomi/placeholder.txt",price:74.99,original_price:null,stock:12,badge:"hot",description:"Corde à sauter connectée Xiaomi avec affichage LED en temps réel. Suivi précis des données d'entraînement via l'application Mi Home : sauts, calories, durée, fréquence. Roulement à billes silencieux et câble en acier gainé PVC. Grip silicone antidérapant. Longueur réglable. Le parfait croisement entre sport et technologie."},
+  {id:38,name:"Push-Up Board MultiGrip 28",category:"sport",image:"Images/sport/pushup-board/placeholder.txt",price:57.99,original_price:69.99,stock:15,badge:"sale",description:"Planche de pompes pliable avec 28 positions codées par couleur. Cible 4 groupes musculaires : pectoraux (rouge), épaules (jaune), dos (bleu), triceps (vert). Capacité 300 kg, matériau ABS haute résistance. Base antidérapante avec poignées amovibles. Se plie pour un rangement compact. Poster d'exercices inclus."},
+  {id:39,name:"Roue Abdominale PowerWheel Pro",category:"sport",image:"Images/sport/ab-roller/placeholder.txt",price:37.99,original_price:null,stock:20,badge:"new",description:"Roue abdominale avec mécanisme de rebond automatique pour un retour assisté. Tapis de genoux antidérapant inclus. Roue large ultra-stable en caoutchouc silencieux. Poignées ergonomiques en mousse haute densité. Travaille les abdominaux, le dos et les bras en profondeur. Convient aux débutants comme aux confirmés."},
+  {id:40,name:"Gilet Trail Hydratation UltraLight",category:"sport",image:"Images/sport/gilet-hydratation/placeholder.txt",price:62.99,original_price:null,stock:10,badge:"new",description:"Gilet d'hydratation ultra-léger pour le trail running et la randonnée. Compatible poche à eau 2L (non incluse). Multiples poches avant pour flasques souples, nutrition et smartphone. Tissu mesh 3D respirant à séchage rapide. Sangles ajustables pour un maintien parfait en mouvement. Bandes réfléchissantes pour la visibilité nocturne."},
+
+  // TECH
+  {id:41,name:"Balance Connectée SolarFit Pro",category:"tech",image:"Images/tech/balance-kaload/placeholder.txt",price:67.99,original_price:null,stock:16,badge:"new",description:"Pèse-personne connecté avec rechargement solaire et USB-C. Analyse complète de la composition corporelle : IMC, masse grasse, masse musculaire, eau corporelle, masse osseuse et métabolisme basal. Connexion Bluetooth vers l'application smartphone. Surface en verre trempé, capacité 180 kg. Précision 100 g. Suivi multi-utilisateurs."},
+  {id:42,name:"Balance Xiaomi Mijia S400 Pro",category:"tech",image:"Images/tech/balance-xiaomi/placeholder.txt",price:99.99,original_price:null,stock:10,badge:"hot",description:"Balance connectée Xiaomi avec écran TFT 3.5 pouces intégré — pas besoin du téléphone pour lire vos données. Analyse BIA double fréquence pour 25+ métriques santé avancées. Bluetooth 5.1, app Mi Fitness. Capacité 150 kg, précision 100 g. Surface en verre trempé antidérapant. Design minimaliste Xiaomi. Le suivi santé premium."},
+  {id:43,name:"Écouteurs Realme Buds Air7 ANC",category:"audio",image:"Images/tech/realme-buds/placeholder.txt",price:99.99,original_price:119.99,stock:14,badge:"sale",description:"Écouteurs true wireless avec réduction de bruit active 52 dB — parmi les plus puissants du marché. Bluetooth 5.4, drivers 13 mm pour un son riche et détaillé. Autonomie exceptionnelle : 8h + 44h avec le boîtier. Résistance IPX5 à l'eau et la transpiration. Mode transparence pour rester connecté à l'environnement. Charge rapide USB-C."},
+  {id:44,name:"Soundcore Liberty 5 by Anker",category:"audio",image:"Images/tech/soundcore-liberty/placeholder.txt",price:159.99,original_price:null,stock:8,badge:"hot",description:"Écouteurs premium Hi-Res Audio certifiés LDAC par Anker. Réduction de bruit adaptative ANC 3.0 avec 6 microphones. Autonomie 48 heures avec le boîtier. Égaliseur personnalisable via l'app Soundcore. Bluetooth 5.3 multipoint. Son spatial immersif. Design intra-auriculaire léger et confortable. Le choix audiophile sous les 200€."},
+  {id:45,name:"Edifier X1 Evo TWS",category:"audio",image:"Images/tech/edifier-x1/placeholder.txt",price:89.99,original_price:null,stock:15,badge:"new",description:"Écouteurs true wireless Edifier avec drivers 13.6 mm pour un son audiophile. Fonctionnalité de traduction multilingue intégrée — idéal en voyage. Autonomie 28 heures avec le boîtier. IPX5 résistant à l'eau et la transpiration. Bluetooth 5.3 faible latence. Commandes tactiles. La qualité audio Edifier à un prix accessible."},
+  {id:46,name:"Écouteurs Open-Ear SportFlex",category:"audio",image:"Images/tech/ecouteurs-openear/placeholder.txt",price:79.99,original_price:null,stock:18,badge:null,description:"Écouteurs sport open-ear avec crochets d'oreille sécurisés. Design à conduction aérienne qui laisse les oreilles libres pour entendre l'environnement — idéal pour la course en ville. IPX7 étanche, résiste à la pluie et la transpiration intense. Son clair et équilibré avec basses renforcées. Autonomie 8 heures. Ultra-légers : 9 g par écouteur."},
+  {id:47,name:"Lenovo EA430 Sport Hook",category:"audio",image:"Images/tech/lenovo-ea430/placeholder.txt",price:62.99,original_price:null,stock:20,badge:null,description:"Écouteurs sport Lenovo avec crochets d'oreille anti-chute. Bluetooth 5.4 avec son panoramique 720° immersif. Autonomie 24 heures avec le boîtier. Mode faible latence pour le gaming mobile. Microphone intégré pour les appels. Conception légère et confortable pour les longues sessions d'entraînement. Charge rapide USB-C."},
+
+  // ACCESSOIRES — TRACKING / SMARTWATCHES
+  {id:48,name:"Zeblaze Stratos 4 GPS",category:"tracking",image:"Images/accessoire/zeblaze-stratos4/placeholder.txt",price:139.99,original_price:null,stock:10,badge:"hot",description:"Montre connectée GPS avec écran AMOLED 1.43 pouces. GPS intégré multi-satellites pour un suivi précis des parcours outdoor. Étanche 5ATM + IP69K. Autonomie exceptionnelle de 60 jours. Altimètre barométrique, boussole et lampe LED intégrée. Appels Bluetooth, SpO2, fréquence cardiaque 24/7. Plus de 100 modes sport. La montre outdoor ultime."},
+  {id:49,name:"Zeblaze Vibe 8 AMOLED",category:"tracking",image:"Images/accessoire/zeblaze-vibe8/placeholder.txt",price:109.99,original_price:null,stock:14,badge:"new",description:"Montre connectée avec écran AMOLED 1.43 pouces et verre saphir résistant aux rayures. Autonomie impressionnante de 60 jours. Étanche 5ATM + IP69K. Appels Bluetooth mains libres. Suivi santé complet : fréquence cardiaque, SpO2, tension, sommeil et stress. Lampe LED intégrée. Design premium à prix accessible."},
+  {id:50,name:"Zeblaze GTS 3 Pro",category:"tracking",image:"Images/accessoire/zeblaze-gts3pro/placeholder.txt",price:89.99,original_price:null,stock:20,badge:null,description:"Montre connectée AMOLED 1.43 pouces — le best-seller Zeblaze avec plus de 500 avis positifs. Appels Bluetooth, suivi santé (fréquence cardiaque, SpO2, pression artérielle). IP68 étanche. Multisport, notifications smartphone. Le meilleur rapport qualité-prix en smartwatch connectée. Parfaite pour débuter dans le tracking."},
+  {id:51,name:"Zeblaze BTalk 3 Pro",category:"tracking",image:"Images/accessoire/zeblaze-btalk3/placeholder.txt",price:109.99,original_price:null,stock:12,badge:null,description:"Montre connectée AMOLED 1.43 pouces avec système d'appel Bluetooth avancé et haut-parleur intégré. Suivi santé complet : fréquence cardiaque, SpO2, pression artérielle, sommeil. Exercices de respiration guidés. IP68 étanche. Musique stockée et contrôle à distance. L'alliée du quotidien et du sport."},
+  {id:52,name:"Xiaomi Mi Band 10",category:"tracking",image:"Images/accessoire/mi-band-10/placeholder.txt",price:99.99,original_price:null,stock:18,badge:"hot",description:"Bracelet connecté Xiaomi dernière génération avec écran AMOLED 1.72 pouces. Étanche 5ATM. Suivi santé avancé : fréquence cardiaque, SpO2, sommeil et stress. Plus de 150 modes sport. Autonomie jusqu'à 21 jours. Bluetooth, app Mi Fitness. Le bracelet connecté le plus vendu au monde — design discret et élégant."},
+
+  // AUTRES ACCESSOIRES
+  {id:53,name:"Gourde Sport Inox ThermoFlask 900ml",category:"tracking",image:"Images/accessoire/gourde-tyeso/placeholder.txt",price:49.99,original_price:null,stock:25,badge:"new",description:"Gourde isotherme en acier inoxydable 304 double paroi. Conserve le froid 24h et le chaud 12h. Capacité 900 ml avec paille intégrée et bouchon sport. Anti-fuite garantie. Sans BPA. Design épuré et robuste. Parfaite pour la salle de sport, le bureau, la randonnée et le quotidien. Se nettoie facilement au lave-vaisselle."},
 ];
 
 // ── STATE ───────────────────────────────────────────────────────
@@ -818,6 +166,7 @@ async function init() {
     }
   } catch(e) {
     allProducts = DEMO; apiOnline = false;
+    setBanner('offline', '⚠ API hors ligne — données de démo affichées. Lancez : uvicorn main:app --reload');
     document.getElementById('statProducts').textContent = DEMO.length+'+';
   }
   renderSections();
@@ -872,7 +221,6 @@ function renderSections() {
         ${shown.map((p,i)=>`
           <div class="product-card" style="animation-delay:${i*.05}s" onclick="openPdp(${p.id})">
             ${p.badge?`<span class="badge badge-${p.badge}">${badges[p.badge]}</span>`:''}
-            ${p.price>=50?`<span class="badge badge-shipping">Livraison gratuite</span>`:''}
             <div class="product-img-wrap">
               ${p.image ? `<img class="product-img" src="${p.image}" alt="${p.name}">` : `<div class="product-emoji">${p.emoji||'📦'}</div>`}
               <div class="card-actions">
@@ -888,7 +236,6 @@ function renderSections() {
                 ${p.original_price?`<span class="original">${p.original_price.toFixed(2).replace('.',',')} €</span>`:''}
               </div>
               <div class="product-stock ${p.stock<=5?'low':''}">${p.stock<=5?`⚡ Plus que ${p.stock} en stock`:`En stock (${p.stock})`}</div>
-              ${REVIEWS[p.id] ? `<div class="product-rating"><span class="rating-stars">★</span> ${(REVIEWS[p.id].reduce((s,r)=>s+r.rating,0)/REVIEWS[p.id].length).toFixed(1)} <span class="rating-count">(${REVIEWS[p.id].length})</span></div>` : ''}
             </div>
           </div>`).join('')}
       </div>
@@ -932,7 +279,6 @@ function openCategoryPage(e, link, sectionId) {
   document.getElementById('catProducts').innerHTML = items.map((p,i)=>`
     <div class="product-card" style="animation-delay:${i*.05}s" onclick="openPdp(${p.id})">
       ${p.badge?`<span class="badge badge-${p.badge}">${badges[p.badge]}</span>`:''}
-      ${p.price>=50?`<span class="badge badge-shipping">Livraison gratuite</span>`:''}
       <div class="product-img-wrap">
         ${p.image ? `<img class="product-img" src="${p.image}" alt="${p.name}">` : `<div class="product-emoji">${p.emoji||'📦'}</div>`}
         <div class="card-actions">
@@ -948,7 +294,6 @@ function openCategoryPage(e, link, sectionId) {
           ${p.original_price?`<span class="original">${p.original_price.toFixed(2).replace('.',',')} €</span>`:''}
         </div>
         <div class="product-stock ${p.stock<=5?'low':''}">${p.stock<=5?`⚡ Plus que ${p.stock} en stock`:`En stock (${p.stock})`}</div>
-        ${REVIEWS[p.id] ? `<div class="product-rating"><span class="rating-stars">★</span> ${(REVIEWS[p.id].reduce((s,r)=>s+r.rating,0)/REVIEWS[p.id].length).toFixed(1)} <span class="rating-count">(${REVIEWS[p.id].length})</span></div>` : ''}
       </div>
     </div>`).join('');
 
@@ -1010,10 +355,6 @@ function addToCart(id) {
   if (ex) { if(ex.qty>=p.stock){showToast('⚠ Stock max atteint',true);return;} ex.qty++; }
   else cart.push({...p,qty:1});
   updateCart(); showToast(`${p.emoji} ${p.name} ajouté !`);
-  const cartBtn = document.querySelector('.icon-btn[title="Panier"]');
-  cartBtn.style.animation = 'none';
-  cartBtn.offsetHeight;
-  cartBtn.style.animation = 'cartPulse .4s ease';
 }
 
 function removeFromCart(id) { cart=cart.filter(i=>i.id!==id); updateCart(); }
@@ -1170,7 +511,6 @@ function openPdp(id) {
   const stockEl = document.getElementById('pdpStockEl');
   stockEl.className = 'pdp-stock-info' + (p.stock<=5?' low':'');
   stockEl.textContent = p.stock<=5 ? `⚡ Plus que ${p.stock} en stock` : `✓ En stock (${p.stock} disponibles)`;
-  document.getElementById('pdpViewers').textContent = `👁 ${Math.floor(Math.random()*18)+5} personnes regardent ce produit`;
   document.getElementById('pdpBadgeEl').innerHTML = p.badge
     ? `<span class="pdp-badge-inline badge-${p.badge}">${badgeLabels[p.badge]}</span>` : '';
   document.getElementById('pdpDescEl').textContent = p.description || 'Aucune description disponible.';
@@ -1203,8 +543,7 @@ function openPdp(id) {
   setupGallery(p, 0);
 
   // Bouton panier
-  document.getElementById('pdpQty').textContent = '1';
-  document.getElementById('pdpBtnAdd').onclick = () => { const qty = parseInt(document.getElementById('pdpQty').textContent); for(let i=0;i<qty;i++) addToCart(p.id); showToast(`${qty > 1 ? qty+'x ' : ''}${p.name} ajouté !`); };
+  document.getElementById('pdpBtnAdd').onclick = () => { addToCart(p.id); showToast(`${p.emoji||'✓'} ${p.name} ajouté !`); };
 
   // Bouton favori PDP
   const wishBtn = document.getElementById('pdpBtnWish');
@@ -1214,7 +553,6 @@ function openPdp(id) {
 
   // Avis clients
   renderReviews(p.id);
-  renderSimilar(p);
 
   // Afficher la page produit, masquer le reste
   window.scrollTo(0,0);
@@ -1240,7 +578,7 @@ function setupGallery(p, colorIndex) {
       <div class="pdp-gallery-with-thumbs">
         <div class="pdp-thumbs-vertical" id="pdpThumbsV">
           ${images.map((src,i)=>`
-            <div class="pdp-thumb${i===0?' active':''}" data-src="${src.replace(/"/g,'&quot;')}" onmouseenter="pdpHoverThumb(this)" onclick="openLightbox(this.dataset.src)">
+            <div class="pdp-thumb${i===0?' active':''}" onmouseenter="pdpHoverThumb('${src}',this)" onclick="openLightbox('${src}')">
               <img src="${src}" alt=""></div>`).join('')}
         </div>
         <div class="pdp-gallery-main" id="pdpGalleryMain">
@@ -1259,25 +597,7 @@ function setupGallery(p, colorIndex) {
 }
 
 // ── LIGHTBOX ───────────────────────────────────────────────────
-let lightboxImages = [];
-let lightboxIndex = 0;
-
 function openLightbox(src) {
-  const p = currentPdpProduct;
-  if (p) {
-    if (p.colors && p.colors.length > 0) {
-      const activeIdx = document.querySelector('.color-swatch.active');
-      const ci = activeIdx ? [...document.querySelectorAll('.color-swatch')].indexOf(activeIdx) : 0;
-      lightboxImages = p.colors[ci].images || [];
-    } else if (p.images) {
-      lightboxImages = p.images;
-    } else if (p.image) {
-      lightboxImages = [p.image];
-    } else {
-      lightboxImages = [];
-    }
-  }
-  lightboxIndex = Math.max(0, lightboxImages.indexOf(src));
   const lb = document.getElementById('lightbox');
   document.getElementById('lightboxImg').src = src;
   lb.classList.add('open');
@@ -1285,11 +605,6 @@ function openLightbox(src) {
 function closeLightbox(e) {
   if (e.target.tagName === 'IMG') return;
   document.getElementById('lightbox').classList.remove('open');
-}
-function lightboxNav(dir) {
-  if (!lightboxImages.length) return;
-  lightboxIndex = (lightboxIndex + dir + lightboxImages.length) % lightboxImages.length;
-  document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
 }
 
 function selectColor(index) {
@@ -1299,8 +614,7 @@ function selectColor(index) {
   setupGallery(currentPdpProduct, index);
 }
 
-function pdpHoverThumb(thumb) {
-  const src = thumb.dataset.src;
+function pdpHoverThumb(src, thumb) {
   const main = document.getElementById('pdpGalleryMain');
   if (main) {
     main.innerHTML = `<img src="${src}" alt="" onclick="openLightbox(this.src)">`;
@@ -1355,7 +669,6 @@ function showFavorites() {
       ${list.map((p,i)=>`
         <div class="product-card" style="animation-delay:${i*.05}s" onclick="openPdp(${p.id})">
           ${p.badge?`<span class="badge badge-${p.badge}">${badges[p.badge]}</span>`:''}
-          ${p.price>=50?`<span class="badge badge-shipping">Livraison gratuite</span>`:''}
           <div class="product-img-wrap">
             ${p.image ? `<img class="product-img" src="${p.image}" alt="${p.name}">` : `<div class="product-emoji">${p.emoji||'📦'}</div>`}
             <div class="card-actions">
@@ -1371,7 +684,6 @@ function showFavorites() {
               ${p.original_price?`<span class="original">${p.original_price.toFixed(2).replace('.',',')} €</span>`:''}
             </div>
             <div class="product-stock ${p.stock<=5?'low':''}">${p.stock<=5?`⚡ Plus que ${p.stock} en stock`:`En stock (${p.stock})`}</div>
-            ${REVIEWS[p.id] ? `<div class="product-rating"><span class="rating-stars">★</span> ${(REVIEWS[p.id].reduce((s,r)=>s+r.rating,0)/REVIEWS[p.id].length).toFixed(1)} <span class="rating-count">(${REVIEWS[p.id].length})</span></div>` : ''}
           </div>
         </div>`).join('')}
     </div>`;
@@ -1382,14 +694,6 @@ function showFavorites() {
 function selectSize(btn) {
   document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-}
-
-function changePdpQty(d) {
-  const el = document.getElementById('pdpQty');
-  let v = parseInt(el.textContent) + d;
-  if (v < 1) v = 1;
-  if (v > 10) v = 10;
-  el.textContent = v;
 }
 
 // ── REVIEWS DATA ──────────────────────────────────────────────
@@ -1507,30 +811,6 @@ const REVIEWS = {
     {name:"Mélanie R.",rating:5,date:"01/03/2026",text:"On a remplacé notre abonnement salle par cette chaise romaine et on ne regrette pas. Toute la famille l'utilise. Robuste et polyvalente.",images:["Images/sport/chaise romaine/avis/A22ea0db10acb4b868ba4c2c2e9ca79f07.jpg_960x960q75.jpg_.png"]},
     {name:"Fabrice H.",rating:4,date:"16/02/2026",text:"Excellente chaise romaine pour le prix. Les exercices sont variés : dips, tractions, relevés de jambes. Le seul bémol c'est l'espace qu'elle prend, prévoyez de la place.",images:["Images/sport/chaise romaine/avis/A2f0ab8e7b0574a32bb7fbf31abd3aa40V.jpg_960x960q75.jpg_.png"]},
     {name:"Isabelle T.",rating:5,date:"02/02/2026",text:"Cadeau pour mon fils qui fait de la muscu, il est super content. La structure ne bouge pas d'un pouce. Hauteur ajustable pratique pour toute la famille."}
-  ],
-  56:[
-    {name:"Yassine K.",rating:5,date:"18/03/2026",text:"Kit complet et de bonne qualité. Le sac est solide et bien rempli, les gants sont confortables. Parfait pour se défouler après le boulot. Accroché au plafond du garage, ça tient super bien.",images:["Images/sport/sac frappe gant/avis/Capture d'écran 2026-03-26 150833.png"]},
-    {name:"Sébastien V.",rating:4,date:"04/03/2026",text:"Bon rapport qualité-prix pour un kit complet. Le sac encaisse bien les coups et les gants sont corrects pour débuter. Montage rapide avec la chaîne fournie.",images:["Images/sport/sac frappe gant/avis/Capture d'écran 2026-03-26 150853.png"]},
-    {name:"Laëtitia M.",rating:5,date:"20/02/2026",text:"Acheté pour mon ado, il passe son temps dessus ! Le tissu Oxford est résistant et les coutures tiennent bien. Les gants sont un peu petits pour des grandes mains, sinon c'est top.",images:["Images/sport/sac frappe gant/avis/Capture d'écran 2026-03-26 150907.png"]},
-    {name:"Christophe D.",rating:5,date:"05/02/2026",text:"Excellent pour le cardio et la boxe à la maison. La qualité est là. J'ai ajouté du tissu à l'intérieur pour le rendre plus lourd, c'est parfait maintenant."}
-  ],
-  57:[
-    {name:"Florian G.",rating:5,date:"20/03/2026",text:"Kit d'haltères très polyvalent. Le système 2-en-1 est génial, en 10 secondes je passe des haltères à la barre. Les disques sont bien fixés et ne bougent pas pendant l'exercice.",images:["Images/sport/halters/avis/Capture d'écran 2026-03-26 151240.png"]},
-    {name:"Nadia B.",rating:4,date:"06/03/2026",text:"Bon set de musculation pour la maison. Les 30 kg suffisent largement pour débuter. Le connecteur barre est solide. Seul bémol : les disques en ciment sont un peu encombrants."},
-    {name:"Axel T.",rating:5,date:"19/02/2026",text:"Rapport qualité-prix imbattable. J'ai pu monter un home gym complet avec ce kit. La barre connectée permet de faire du développé couché sans problème. Très content !"},
-    {name:"Carla S.",rating:5,date:"03/02/2026",text:"Offert à mon copain pour son anniversaire. Il s'entraîne tous les jours avec. La qualité est bonne et les poids sont bien calibrés."}
-  ],
-  58:[
-    {name:"Thierry L.",rating:5,date:"22/03/2026",text:"Haltères réglables de très bonne facture. Le système de verrouillage est rapide et sûr. Le revêtement caoutchouc protège bien le parquet. Beaucoup mieux que des haltères fixes."},
-    {name:"Amandine P.",rating:4,date:"08/03/2026",text:"Pratique et compact, ça remplace une dizaine d'haltères classiques. Le passage en barre est un vrai plus. Un peu cher mais la qualité justifie le prix."},
-    {name:"Benjamin R.",rating:5,date:"22/02/2026",text:"Excellent investissement pour le home gym. Les disques en acier chromé sont superbes et durables. Le grip des poignées est parfait même avec les mains moites."},
-    {name:"Sophie H.",rating:5,date:"08/02/2026",text:"On les utilise à deux avec mon mari. Le réglage rapide du poids permet de passer d'un exercice à l'autre sans perdre de temps. Recommandé !"}
-  ],
-  59:[
-    {name:"Mehdi A.",rating:5,date:"19/03/2026",text:"Cible murale super efficace pour travailler la précision. La mousse absorbe bien les coups sans faire mal aux poings. Fixation solide au mur, ça ne bouge pas d'un millimètre.",images:["Images/sport/Tapis de poinçonnage mural/avis/Capture d'écran 2026-03-26 151823.png"]},
-    {name:"Pauline F.",rating:5,date:"05/03/2026",text:"Idéal pour s'entraîner à la maison sans faire de bruit. La mousse est dense et agréable. Mon fils l'utilise pour le taekwondo et il progresse vite.",images:["Images/sport/Tapis de poinçonnage mural/avis/Capture d'écran 2026-03-26 151837.png"]},
-    {name:"Grégory N.",rating:4,date:"18/02/2026",text:"Bonne cible d'entraînement. La plaque en acier est robuste et les chevilles tiennent bien dans le mur en béton. Attention, pas adapté pour le placoplâtre.",images:["Images/sport/Tapis de poinçonnage mural/avis/Capture d'écran 2026-03-26 151850.png"]},
-    {name:"Jessica C.",rating:5,date:"02/02/2026",text:"Super produit ! Beaucoup mieux qu'un sac de frappe pour travailler les combinaisons. La silhouette permet de viser différentes zones. Installation en 15 minutes."}
   ]
 };
 
@@ -1554,7 +834,6 @@ function renderReviews(productId) {
         <span>${avg}/5</span>
       </div>
     </div>
-    <div class="reviews-grid">
     ${reviews.map(r => `
       <div class="review-card">
         <div class="review-top">
@@ -1566,34 +845,9 @@ function renderReviews(productId) {
         </div>
         <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
         <div class="review-text">${r.text}</div>
-        ${r.images ? `<div class="review-images">${r.images.map(img => `<img src="${img}" alt="Photo client" onclick="openLightbox(this.src)">`).join('')}</div>` : ''}
+        ${r.images ? `<div class="review-images">${r.images.map(img => `<img src="${img}" alt="Photo client" onclick="event.stopPropagation();openLightbox('${img}')">`).join('')}</div>` : ''}
       </div>
     `).join('')}
-    </div>
-  `;
-}
-
-function renderSimilar(product) {
-  const container = document.getElementById('pdpSimilar');
-  const similar = allProducts.filter(p => p.id !== product.id && p.category === product.category).slice(0, 4);
-  if (similar.length === 0) {
-    container.innerHTML = '';
-    return;
-  }
-  const badges = {new:'Nouveau',sale:'Promo',hot:'Populaire'};
-  container.innerHTML = `
-    <div class="pdp-similar-title">Articles similaires</div>
-    <div class="similar-grid">
-    ${similar.map(p => `
-      <div class="similar-card" onclick="openPdp(${p.id})">
-        ${p.image && !p.image.includes('placeholder') ? `<img class="similar-card-img" src="${p.image}" alt="${p.name}">` : `<div class="similar-card-img" style="display:flex;align-items:center;justify-content:center;font-size:3rem;background:var(--surface)">${p.emoji||'📦'}</div>`}
-        <div class="similar-card-body">
-          <div class="similar-card-name">${p.name}</div>
-          <div class="similar-card-price">${p.price.toFixed(2).replace('.',',')} €</div>
-        </div>
-      </div>
-    `).join('')}
-    </div>
   `;
 }
 
